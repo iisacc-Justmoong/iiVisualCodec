@@ -1,10 +1,12 @@
 """Independent format checks using host tools; binaries are never linked into the SDK."""
 import argparse
 import json
+import os
 from pathlib import Path
 import shutil
 import struct
 import subprocess
+import sys
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -14,11 +16,19 @@ def main():
     parser.add_argument("--ffmpeg", default=shutil.which("ffmpeg"))
     parser.add_argument("--ffprobe", default=shutil.which("ffprobe"))
     parser.add_argument("--usdcat", default=shutil.which("usdcat"))
+    parser.add_argument("--workspace", type=Path, help=argparse.SUPPRESS)
     args = parser.parse_args()
+    if args.workspace is None:
+        sys.path.insert(0, os.environ.get("IIVISUALCODEC_TEST_PROVIDER_PYTHON_DIR",
+            str(Path.home() / ".local/SDK/iiFileProvider/share/iiFileProvider/python")))
+        import resource_runner
+        return resource_runner.run(ROOT / "resources", [sys.executable, "-B", __file__,
+            "--workspace", "@WORK@", *sys.argv[1:]])
     if not all((args.ffmpeg, args.ffprobe, args.usdcat)):
         parser.error("ffmpeg, ffprobe and usdcat are required for this independent check")
-    root = ROOT / "build/interoperability"
-    root.mkdir(parents=True, exist_ok=True)
+    root = args.workspace.resolve()
+    if not root.is_relative_to((ROOT / "resources/.t").resolve()):
+        parser.error("The test workspace must be under resources/.t/")
     results = []
     def run(command):
         command = [str(x) for x in command]
@@ -28,6 +38,8 @@ def main():
         if process.returncode:
             raise RuntimeError(process.stderr or process.stdout)
         return process.stdout
+    run([ROOT / "build/iiVisualCodec_video", root / "video-contracts"])
+    run([ROOT / "build/iiVisualCodec_usd", root / "usd-contracts"])
     fixtures = []
     for filename, codec, extra in [("h264.mp4", "libx264", []),
                                    ("hevc.mp4", "libx265", ["-x265-params", "log-level=error:pools=1"]),
@@ -41,7 +53,7 @@ def main():
                         ("movie.mov", "mjpeg"), ("movie.avi", "mjpeg"), ("stereo360.mkv", "ffv1"), ("stereo360.mp4", "mpeg4"), ("stereo360-h264.mp4", "h264")]:
         data = json.loads(run([args.ffprobe, "-v", "error", "-count_frames", "-show_entries",
                               "stream=codec_name,width,height,nb_read_frames,time_base:stream_side_data", "-of", "json",
-                              ROOT / "build/video-contracts" / name]))
+                              root / "video-contracts" / name]))
         stream = data["streams"][0]
         assert stream["codec_name"] == codec and stream["nb_read_frames"] == "3", stream
         if name.startswith("stereo360"):
@@ -50,15 +62,15 @@ def main():
             assert any(row.get("type") == "side by side" for row in side)
     for name in ("scene.usda", "scene.usdc", "scene.usdz", "textured.usdz"):
         output = root / (name+".usda")
-        run([args.usdcat, ROOT / "build/usd-contracts" / name, "-o", output])
+        run([args.usdcat, root / "usd-contracts" / name, "-o", output])
         assert "Mesh" in output.read_text(), name
-    with zipfile.ZipFile(ROOT / "build/usd-contracts/textured.usdz") as archive:
+    with zipfile.ZipFile(root / "usd-contracts/textured.usdz") as archive:
         names = archive.namelist()
         assert names[0].endswith(".usdc") and any(name.endswith("texture.png") for name in names), names
         # USDZ stores uncompressed ZIP entries with 64-byte-aligned payloads.
         for entry in archive.infolist():
             assert entry.compress_type == zipfile.ZIP_STORED
-            with (ROOT / "build/usd-contracts/textured.usdz").open("rb") as file:
+            with (root / "usd-contracts/textured.usdz").open("rb") as file:
                 file.seek(entry.header_offset+26)
                 name_length, extra_length = struct.unpack("<HH",file.read(4))
                 assert (entry.header_offset+30+name_length+extra_length)%64==0
@@ -67,4 +79,4 @@ def main():
     print("Independent H.264/HEVC/VP9 decode, container metadata and Apple USD checks passed")
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

@@ -10,8 +10,8 @@
   },
   "source": {
     "path": "docs/OpenCV.md",
-    "sha256": "b1d855177526c8f1dbd4aad36cc0e96ccd468f274608a44b00f9bddddf50592d",
-    "bytes": 5484,
+    "sha256": "c4c62f0d4e15cdf33cafac871bcc8126b3270db98d6104d5bdf39ce086ff8f6c",
+    "bytes": 5497,
     "line_count": 45,
     "encoding": "utf-8",
     "language": "ko"
@@ -219,7 +219,7 @@
       "kind": "paragraph",
       "start_line": 28,
       "end_line": 28,
-      "raw": "`tools/dependencies.json`은 OpenCV 4.14.0 공식 archive와 SHA-256을 고정한다. `python3 -B tools/bootstrap_dependencies.py --only opencv --jobs 4`로 build/dependencies/에 구성·빌드·설치한다. Qt·highgui·videoio·외부 FFmpeg·CUDA·OpenCL·nonfree를 사용하지 않고, ONNX reader용 protobuf는 archive 안의 소스로 빌드한다. 기존 이미지·비디오 코덱의 책임을 OpenCV로 옮기지 않는다. 설치 prefix의 OpenCV·protobuf 등 재배포 고지도 키트에 함께 복사한다.\n"
+      "raw": "`tools/dependencies.json`은 OpenCV 4.14.0 공식 archive와 SHA-256을 고정한다. `python3 -B tools/bootstrap_dependencies.py --only opencv --jobs 4`로 구성·빌드하고 결과를 resources/dependencies/에 둔다. Qt·highgui·videoio·외부 FFmpeg·CUDA·OpenCL·nonfree를 사용하지 않고, ONNX reader용 protobuf는 archive 안의 소스로 빌드한다. 기존 이미지·비디오 코덱의 책임을 OpenCV로 옮기지 않는다. 설치 prefix의 OpenCV·protobuf 등 재배포 고지도 키트에 함께 복사한다.\n"
     },
     {
       "id": "b000028",

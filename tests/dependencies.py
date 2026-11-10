@@ -14,8 +14,7 @@ spec.loader.exec_module(bootstrap)
 
 class ArchiveTests(unittest.TestCase):
     def test_resume_requires_matching_source_prefix_and_options(self):
-        (ROOT / "build").mkdir(exist_ok=True)
-        with tempfile.TemporaryDirectory(dir=ROOT / "build") as directory:
+        with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "CMakeCache.txt"
             with self.assertRaises(ValueError):
                 bootstrap.verify_cmake_cache(path, Path("/source"), Path("/prefix"), [])
@@ -36,17 +35,34 @@ class ArchiveTests(unittest.TestCase):
             stage.refresh_opencv(ROOT)
         with self.assertRaises(ValueError):
             stage.refresh_geometry(ROOT)
-        (ROOT / "build").mkdir(exist_ok=True)
-        with tempfile.TemporaryDirectory(dir=ROOT / "build") as directory:
+        with tempfile.TemporaryDirectory() as directory:
             with self.assertRaises(ValueError):
                 stage.stage(Path(directory), ROOT)
+            stage.STAGING_ROOT = Path(directory) / "staging"
+            stage.STAGING_ROOT.mkdir()
+            candidate = stage.STAGING_ROOT / "package"
+            self.assertEqual(stage.checked_stage(candidate), candidate.resolve())
+            candidate.mkdir()
+            (candidate / "sentinel").write_text("preserve")
+            with self.assertRaises(ValueError):
+                stage.checked_stage(candidate)
+            self.assertEqual((candidate / "sentinel").read_text(), "preserve")
+            try:
+                (stage.STAGING_ROOT / "escape").symlink_to(Path(directory), target_is_directory=True)
+            except OSError as error:
+                self.skipTest(f"Cannot create a symbolic link on this platform: {error}")
+            with self.assertRaises(ValueError):
+                stage.checked_stage(stage.STAGING_ROOT / "escape" / "outside")
+
+    def test_dependency_resources_and_build_intermediates_have_separate_roots(self):
+        self.assertEqual(bootstrap.DEPENDENCY_ROOT, ROOT / "resources/dependencies")
+        self.assertEqual(bootstrap.DEPENDENCY_BUILD_ROOT, ROOT / "build/dependency-build")
 
     def test_stage_upgrade_removes_retired_dnn_and_preserves_image_backend(self):
         spec = importlib.util.spec_from_file_location("visual_stage_retirement", ROOT / "tools/stage_package.py")
         stage = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(stage)
-        (ROOT / "build").mkdir(exist_ok=True)
-        with tempfile.TemporaryDirectory(dir=ROOT / "build") as directory:
+        with tempfile.TemporaryDirectory() as directory:
             prefix = Path(directory)
             (prefix / "lib").mkdir()
             headers = prefix / "include/opencv4/opencv2"
@@ -63,9 +79,8 @@ class ArchiveTests(unittest.TestCase):
             self.assertFalse((headers / "dnn.hpp").exists())
             self.assertEqual(current.read_bytes(), b"current")
 
-    def test_unsafe_members_never_escape_the_build_directory(self):
-        (ROOT / "build").mkdir(exist_ok=True)
-        with tempfile.TemporaryDirectory(dir=ROOT / "build") as temporary:
+    def test_unsafe_members_never_escape_the_test_workspace(self):
+        with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             for name, kind in [("release/../../escaped", tarfile.REGTYPE),
                                ("/absolute/file", tarfile.REGTYPE),

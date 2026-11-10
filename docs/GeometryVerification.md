@@ -1,5 +1,7 @@
 # iiVisualCodec 0.4 3D·CAD 검증
 
+> 아래 빌드 경로와 명령은 당시 기록이다. 클린 빌드 후 과거 산출물은 남지 않으며 현재 절차는 [BuildLayout.md](BuildLayout.md)와 [Packaging.md](Packaging.md)를 따른다.
+
 2026-10-27 macOS ARM64·Apple Clang 21에서 iiVisualCodec 0.4.0을 빌드하고 실행했다. Geometry·Asset3D·CAD를 추가하고 USD에 공통 지오메트리 연결을 제공한다. 구현은 로컬 작업 트리이며 설치 검증은 사용자 설치본 대신 `build/relocated` 키트를 사용한다.
 
 ## 실행 결과

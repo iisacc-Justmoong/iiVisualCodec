@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reproduce the optional native visual backends inside this repository's build/."""
+"""Reproduce pinned backends with resources under resources/ and intermediates under build/."""
 import argparse
 import hashlib
 import json
@@ -12,6 +12,8 @@ import tarfile
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
+DEPENDENCY_ROOT = ROOT / "resources/dependencies"
+DEPENDENCY_BUILD_ROOT = ROOT / "build/dependency-build"
 MANIFEST = json.loads((ROOT / "tools/dependencies.json").read_text())
 
 def extract(archive, destination):
@@ -58,7 +60,7 @@ def main():
     args = parser.parse_args()
     if args.jobs < 1:
         parser.error("--jobs must be positive")
-    work = ROOT / "build/dependencies"
+    work = DEPENDENCY_ROOT
     prefix = work / "prefix"
     for directory in (work / "downloads", work / "sources", work / "logs", prefix):
         directory.mkdir(parents=True, exist_ok=True)
@@ -83,7 +85,7 @@ def main():
         source = work / "sources" / source_name
         if not source.exists():
             source = extract(archive, work / "sources")
-        binary = work / name / "build"
+        binary = DEPENDENCY_BUILD_ROOT / name
         binary.mkdir(parents=True, exist_ok=True)
         commands = []
         adjustments = []
@@ -132,7 +134,7 @@ def main():
             run(["make", f"-j{args.jobs}"])
             run(["make", "install"])
             # pkg-config's prefix/libdir/include paths must follow a relocated
-            # SDK kit, rather than pointing back into this checkout's build/.
+            # SDK kit, rather than pointing back into this checkout.
             for pc in (prefix / "lib/pkgconfig").glob("lib*.pc"):
                 text = pc.read_text().replace(str(prefix / "lib"), "${prefix}/lib").replace(str(prefix / "include"), "${prefix}/include")
                 text = text.replace(f"prefix={prefix}", "prefix=${pcfiledir}/../..")

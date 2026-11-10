@@ -14,14 +14,14 @@
       "document_id": "urn:iisacc:document:6b6dbfe13bcdba259bced822ad2c98a6df385e43393847dc5a9ba69b51c7386d",
       "source": "AGENT.md",
       "agent_json": "docs/entrypoints/AGENT.agent.json",
-      "source_sha256": "634fd38aa8772cf8404f848142e3aabc3f5ef98468358ebc9cd5b3a00e0bed50",
+      "source_sha256": "89e962abcfd47d5f857656b46f918004dd89da686b20d217830ca5fce28bb126",
       "role": "instructions"
     },
     {
       "document_id": "urn:iisacc:document:71c31649c772bd6a75544e817aff9aa05383a097df5b186022a4cce4ed5415d3",
       "source": "README.md",
       "agent_json": "docs/entrypoints/README.agent.json",
-      "source_sha256": "64a37f300e94e994b647d0f4698ffa70a5463f372b0e47ff000a1e9d3fc89403",
+      "source_sha256": "6706a16c8acd01db2fea40df44137f14cb5ebffc9ad157f151a1f926561c74cb",
       "role": "overview"
     },
     {
@@ -29,6 +29,13 @@
       "source": "docs/Asset3D.md",
       "agent_json": "docs/Asset3D.agent.json",
       "source_sha256": "09e3e0c037f6444dae276aba2ca96e1b7f089085f5d2313fcbc819f4bd5c0c68",
+      "role": "guide"
+    },
+    {
+      "document_id": "urn:iisacc:document:b469cbb49799aa5762f55f8eae22e022c71c7c3096067317d3b3e04c79cec94d",
+      "source": "docs/BuildLayout.md",
+      "agent_json": "docs/BuildLayout.agent.json",
+      "source_sha256": "b5d60ab06bb2fc5e5fb19e75d86aa4aa9b128bfbe374c487300005fb6c237378",
       "role": "guide"
     },
     {
@@ -53,6 +60,13 @@
       "role": "reference"
     },
     {
+      "document_id": "urn:iisacc:document:296d140c5b08910decc86e35d12e441171d4bba59d0bdd812b35c982d15c2c97",
+      "source": "docs/DynamicLinking.md",
+      "agent_json": "docs/DynamicLinking.agent.json",
+      "source_sha256": "193ecb449b417b631338563aa8b4759b88fc7b0d29eb9c8270a3774fdc9c5b66",
+      "role": "guide"
+    },
+    {
       "document_id": "urn:iisacc:document:affea32c2b3c6aa46dff95dfa436862dbfc0a67fdcb3feaabb6cb32260d21981",
       "source": "docs/Geometry.md",
       "agent_json": "docs/Geometry.agent.json",
@@ -63,7 +77,7 @@
       "document_id": "urn:iisacc:document:5ed9264de75987c450ef32adb658ad6fc9bf8d53fae46af750362daa17be970a",
       "source": "docs/GeometryVerification.md",
       "agent_json": "docs/GeometryVerification.agent.json",
-      "source_sha256": "f01268dc263d95f22eac736dc8b4dc78f73734daa67e8e6b882e6025fb13cdf4",
+      "source_sha256": "96ac40b28dabd152977550fe3198d427060ff0f147a99f92ad72ab4459296f2b",
       "role": "evidence"
     },
     {
@@ -77,21 +91,21 @@
       "document_id": "urn:iisacc:document:7fb4846ac41f304b1d8152fb49ce6e4ef9d9b8bd6c1b52c5454226a04ad100ff",
       "source": "docs/OpenCV.md",
       "agent_json": "docs/OpenCV.agent.json",
-      "source_sha256": "b1d855177526c8f1dbd4aad36cc0e96ccd468f274608a44b00f9bddddf50592d",
+      "source_sha256": "c4c62f0d4e15cdf33cafac871bcc8126b3270db98d6104d5bdf39ce086ff8f6c",
       "role": "guide"
     },
     {
       "document_id": "urn:iisacc:document:58cb520811e6848839c66c260ead943b4890cb137c126cce323a8286d29bb3f2",
       "source": "docs/Packaging.md",
       "agent_json": "docs/Packaging.agent.json",
-      "source_sha256": "4eccd2ec18bb0e3df1e662fc6ac577655f312e0a17c170611558c6c5ce9f7149",
+      "source_sha256": "b8f5b386f24955cf4766cdf9f9d2bc462e8027c83b064e64f71f2feae421f3b0",
       "role": "guide"
     },
     {
       "document_id": "urn:iisacc:document:eedfe59e6bbc41f7bda4f3c0e66c4a8158b60745e67b482c4cabdae880584425",
       "source": "docs/README.md",
       "agent_json": "docs/README.agent.json",
-      "source_sha256": "4a1401f622c6fd0d3d55342f65cf3265ca588e0a598bac75c38552811deffecf",
+      "source_sha256": "cb54e2e25744aaa49495622dd898cf1d424e07aa586c386ba0ad28531ee92fb9",
       "role": "overview"
     },
     {
@@ -133,7 +147,7 @@
       "document_id": "urn:iisacc:document:5032de34abc09327f75ecb1759c16b92b51526e7d8ae9fc3534538a9d83dc6e7",
       "source": "docs/Verification.md",
       "agent_json": "docs/Verification.agent.json",
-      "source_sha256": "3bbbee59f0dc928d9a63e0eceff293ff0e28fd956c3529f0c981be652d2135f5",
+      "source_sha256": "15a9c622a21aabff04824424439c92c41ead3fd0c8a318f6ccad6232844efa3e",
       "role": "evidence"
     },
     {
@@ -154,7 +168,7 @@
       "document_id": "urn:iisacc:document:2f20bab68ed5bee46d40f937d0ee4b3725f08b1282bd079d432208ba5102224e",
       "source": "docs/VisionVerification.md",
       "agent_json": "docs/VisionVerification.agent.json",
-      "source_sha256": "ab2fe05785159c8e1f0b5cfafc451b2bc9ec3d974e56da069cb4f0964cb4d406",
+      "source_sha256": "d337e991e41557232a72d357cbfffa5dba004318fddb18af6365e0c7489ec188",
       "role": "evidence"
     },
     {

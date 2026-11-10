@@ -1,5 +1,7 @@
 # iiVisualCodec 0.2 검증 기록
 
+> 아래 빌드 경로와 명령은 당시 기록이다. 클린 빌드 후 과거 산출물은 남지 않으며 현재 절차는 [BuildLayout.md](BuildLayout.md)와 [Packaging.md](Packaging.md)를 따른다.
+
 이 문서는 0.2 시점의 기록이다. 현재 0.3의 Vision·OpenCV와 전체 회귀 검증은 VisionVerification.md를 따른다.
 
 검증일은 2026-10-27이며 실행 호스트는 macOS ARM64, Apple Clang 21이다. 소스·의존성·설치 스테이징·테스트 산출물은 이 저장소의 build/ 안에 두었다. 소스 디렉터리와 CMake 패키지는 iiVisualCodec으로 전환했고, SDK Workspace 등록·Windows 프로젝트 그래프·Qt-free 소비자와 관련 문서도 새 이름을 사용한다. GitHub 저장소명과 origin은 https://github.com/iisacc-Justmoong/iiVisualCodec 이다. 구현 변경은 로컬 작업 트리에 있으며 이 작업에서 구현 커밋·푸시는 수행하지 않았다.

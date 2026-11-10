@@ -7,6 +7,8 @@ import shutil
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
+DEPENDENCIES = ROOT / "resources/dependencies"
+STAGING_ROOT = ROOT / "resources/staging"
 IMAGE_HEADERS = ("jconfig.h", "jerror.h", "jmorecfg.h", "jpeglib.h", "png.h", "pngconf.h", "pnglibconf.h",
                  "libpng16", "tiff.h", "tiffconf.h", "tiffio.h", "tiffio.hxx", "tiffvers.h", "webp")
 IMAGE_LIBRARIES = ("libjpeg.a", "libpng.a", "libpng16.a", "libtiff.a", "libtiffxx.a", "libwebp.a",
@@ -30,7 +32,7 @@ def copy(source, destination):
         shutil.copy2(source, destination, follow_symlinks=False)
 
 def geometry_notices(destination):
-    source = ROOT / "build/dependencies/sources/assimp-6.0.5/contrib"
+    source = DEPENDENCIES / "sources/assimp-6.0.5/contrib"
     for relative in ASSIMP_NOTICES:
         path = source / relative
         if path.is_file():
@@ -43,13 +45,24 @@ def remove_retired_opencv(destination):
     shutil.rmtree(destination / "include/opencv4/opencv2/dnn", ignore_errors=True)
     (destination / "include/opencv4/opencv2/dnn.hpp").unlink(missing_ok=True)
 
-def stage(destination, image_prefix):
+def checked_stage(destination, *, existing=False):
+    """Keep staging within the owned resource tree, including through symlinks."""
+    if STAGING_ROOT.is_symlink():
+        raise ValueError("The staging root cannot be a symlink")
+    root = STAGING_ROOT.resolve()
     destination = destination.resolve()
-    if ROOT / "build" not in destination.parents:
-        raise ValueError("The staging destination must be inside this repository's build/")
-    if destination.exists():
+    if root not in destination.parents:
+        raise ValueError("The staging destination must be inside resources/staging/")
+    if existing:
+        if not (destination / "lib/cmake/iiVisualCodec/iiVisualCodecConfig.cmake").is_file():
+            raise ValueError("Backend refresh requires an existing iiVisualCodec stage")
+    elif destination.exists():
         raise ValueError("Refusing to replace an existing staging directory")
-    backends = ROOT / "build/dependencies/prefix"
+    return destination
+
+def stage(destination, image_prefix):
+    destination = checked_stage(destination)
+    backends = DEPENDENCIES / "prefix"
     if not (backends / "pxrConfig.cmake").is_file():
         raise ValueError("Run bootstrap_dependencies.py before staging")
     image_prefix = image_prefix.resolve()
@@ -70,10 +83,10 @@ def stage(destination, image_prefix):
     subprocess.run(["cmake", "--install", str(ROOT / "build"), "--prefix", str(destination)], check=True)
     provenance = destination / "share/iiVisualCodec/dependencies"
     provenance.mkdir(parents=True, exist_ok=True)
-    for path in (ROOT / "build/dependencies").glob("*-provenance.json"):
+    for path in DEPENDENCIES.glob("*-provenance.json"):
         copy(path, provenance / path.name)
     copy(ROOT / "tools/dependencies.json", provenance / "sources.json")
-    sources = ROOT / "build/dependencies/sources"
+    sources = DEPENDENCIES / "sources"
     for name, directory, files in [
         ("FFmpeg", "ffmpeg-8.0.1", ("COPYING.LGPLv2.1", "LICENSE.md")),
         ("OpenH264", "openh264-2.6.0", ("LICENSE",)),
@@ -89,7 +102,7 @@ def stage(destination, image_prefix):
     # LGPL FFmpeg's exact corresponding source accompanies the binary package.
     for item in json.loads((ROOT / "tools/dependencies.json").read_text()):
         if item["name"] in ("FFmpeg", "OCCT"):
-            copy(ROOT / "build/dependencies/downloads" / item["archive"], destination / "share/iiVisualCodec/sources" / item["archive"])
+            copy(DEPENDENCIES / "downloads" / item["archive"], destination / "share/iiVisualCodec/sources" / item["archive"])
     geometry_notices(destination)
     for pc in (destination / "lib/pkgconfig").glob("*.pc"):
         text = pc.read_text().replace(str(backends), "${prefix}")
@@ -100,10 +113,8 @@ def stage(destination, image_prefix):
 
 def refresh_opencv(destination):
     """Merge only the newly built OpenCV backend into an existing owned stage."""
-    destination = destination.resolve()
-    if ROOT / "build" not in destination.parents or not (destination / "lib/cmake/iiVisualCodec/iiVisualCodecConfig.cmake").is_file():
-        raise ValueError("OpenCV refresh requires an existing iiVisualCodec stage inside build/")
-    backends = ROOT / "build/dependencies/prefix"
+    destination = checked_stage(destination, existing=True)
+    backends = DEPENDENCIES / "prefix"
     required = ("include/opencv4", "lib/cmake/opencv4", "share/licenses/opencv4")
     if not all((backends / name).is_dir() for name in required):
         raise ValueError("Build the pinned OpenCV backend before refreshing a stage")
@@ -118,20 +129,18 @@ def refresh_opencv(destination):
         text = pc.read_text().replace(str(backends), "${prefix}")
         pc.write_text("\n".join("prefix=${pcfiledir}/../.." if line.startswith("prefix=") else line for line in text.splitlines())+"\n")
     provenance = destination / "share/iiVisualCodec/dependencies"
-    copy(ROOT / "build/dependencies/OpenCV-provenance.json", provenance / "OpenCV-provenance.json")
+    copy(DEPENDENCIES / "OpenCV-provenance.json", provenance / "OpenCV-provenance.json")
     copy(ROOT / "tools/dependencies.json", provenance / "sources.json")
     for filename in ("LICENSE", "COPYRIGHT", "NOTICE"):
-        path = ROOT / "build/dependencies/sources/opencv-4.14.0" / filename
+        path = DEPENDENCIES / "sources/opencv-4.14.0" / filename
         if path.exists():
             copy(path, destination / "share/licenses/OpenCV" / filename)
     print("OpenCV backend refreshed:", destination)
 
 def refresh_geometry(destination):
     """Merge pinned Assimp/OCCT files into an existing owned staging kit."""
-    destination = destination.resolve()
-    if ROOT / "build" not in destination.parents or not (destination / "lib/cmake/iiVisualCodec/iiVisualCodecConfig.cmake").is_file():
-        raise ValueError("Geometry refresh requires an existing iiVisualCodec stage inside build/")
-    backends = ROOT / "build/dependencies/prefix"
+    destination = checked_stage(destination, existing=True)
+    backends = DEPENDENCIES / "prefix"
     required = ("include/assimp", "include/opencascade", "lib/cmake/assimp-6.0", "lib/cmake/opencascade")
     if not all((backends / name).is_dir() for name in required):
         raise ValueError("Build pinned Assimp and OCCT before refreshing a stage")
@@ -149,18 +158,18 @@ def refresh_geometry(destination):
     for name, source, notices in [
         ("Assimp", "assimp-6.0.5", ("LICENSE", "CREDITS")),
         ("OCCT", "OCCT-8_0_1", ("LICENSE_LGPL_21.txt", "OCCT_LGPL_EXCEPTION.txt", "README.md"))]:
-        copy(ROOT / f"build/dependencies/{name}-provenance.json", provenance / f"{name}-provenance.json")
+        copy(DEPENDENCIES / f"{name}-provenance.json", provenance / f"{name}-provenance.json")
         for notice in notices:
-            copy(ROOT / "build/dependencies/sources" / source / notice, destination / "share/licenses" / name / notice)
+            copy(DEPENDENCIES / "sources" / source / notice, destination / "share/licenses" / name / notice)
     copy(ROOT / "tools/dependencies.json", provenance / "sources.json")
     occt = next(row for row in json.loads((ROOT / "tools/dependencies.json").read_text()) if row["name"] == "OCCT")
-    copy(ROOT / "build/dependencies/downloads" / occt["archive"], destination / "share/iiVisualCodec/sources" / occt["archive"])
+    copy(DEPENDENCIES / "downloads" / occt["archive"], destination / "share/iiVisualCodec/sources" / occt["archive"])
     geometry_notices(destination)
     print("Assimp and OCCT backends refreshed:", destination)
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--destination", type=Path, default=ROOT / "build/package")
+    parser.add_argument("--destination", type=Path, default=STAGING_ROOT / "package")
     parser.add_argument("--image-prefix", type=Path, default=ROOT.parent / "build/congregation-native/prefix")
     parser.add_argument("--refresh-opencv", action="store_true", help="Merge OpenCV into an existing staged package")
     parser.add_argument("--refresh-geometry", action="store_true", help="Merge Assimp and OCCT into an existing staged package")

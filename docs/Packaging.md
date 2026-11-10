@@ -1,10 +1,10 @@
 # 의존성과 패키지 전달
 
-0.4는 Geometry·Asset3D·CAD를 추가한다. Assimp 6.0.5와 OCCT 8.0.1은 공식 소스 archive 및 SHA-256을 고정한다. 각각 `bootstrap_dependencies.py --only 3d`, `--only cad`로 빌드한다. 공통 Geometry만 요청하면 두 백엔드와 OpenCV·FFmpeg·OpenUSD를 탐색하지 않는다. 기존 `build/relocated`에는 `python3 -B tools/stage_package.py --refresh-geometry --destination build/relocated` 후 `cmake --install build --prefix "$PWD/build/relocated"`로 새 모듈을 합친다.
+0.4는 Geometry·Asset3D·CAD를 추가한다. Assimp 6.0.5와 OCCT 8.0.1은 공식 소스 archive 및 SHA-256을 고정한다. 각각 `bootstrap_dependencies.py --only 3d`, `--only cad`로 빌드한다. 공통 Geometry만 요청하면 두 백엔드와 OpenCV·FFmpeg·OpenUSD를 탐색하지 않는다. 기존 스테이지에는 `python3 -B tools/stage_package.py --refresh-geometry --destination resources/staging/relocated` 후 `cmake --install build --prefix "$PWD/resources/staging/relocated"`로 새 모듈을 합친다.
 
 OCCT는 공유 라이브러리이며 LGPL 본문·헤더 예외·정확한 원본 archive·실제 빌드 명령을 함께 제공한다. Assimp의 BSD 고지도 동봉한다. OCCT 8.0의 STEP/IGES가 요구하는 XCAF·TKV3d 등의 내부 종속성은 빌드하지만 Qt·OpenGL 렌더러·Draw·샘플은 비활성화한다. Assimp는 지정된 importer/exporter와 시스템 zlib를 사용하고 Draco·도구·샘플·상류 테스트는 제외한다. 현재 검증은 GeometryVerification.md에 있다.
 
-0.3은 Vision·OpenCV 구성요소도 제공한다. OpenCV 4.14.0은 같은 체크섬 매니페스트에 고정하고 `bootstrap_dependencies.py --only opencv`로 독립 빌드한다. 전체 bootstrap과 새 패키지 staging은 OpenCV 헤더·공유 라이브러리·CMake export·재배포 고지를 포함한다. 기존 build/ 하위 키트에는 `python3 -B tools/stage_package.py --refresh-opencv --destination build/relocated`로 OpenCV payload를 합친 뒤 SDK를 다시 설치할 수 있다.
+0.3은 Vision·OpenCV 구성요소도 제공한다. OpenCV 4.14.0은 같은 체크섬 매니페스트에 고정하고 `bootstrap_dependencies.py --only opencv`로 독립 빌드한다. 전체 bootstrap과 새 패키지 staging은 OpenCV 헤더·공유 라이브러리·CMake export·재배포 고지를 포함한다. 기존 스테이지에는 `python3 -B tools/stage_package.py --refresh-opencv --destination resources/staging/relocated`로 OpenCV payload를 합칠 수 있다.
 
 Image-only·Vision-only·Geometry-only 소비자는 선택하지 않은 백엔드 검색을 끈 상태에서 별도로 빌드·실행한다. 전체 소비자는 설치된 타깃으로 미디어·AI·3D·CAD 계약과 통합 예제를 실행한다. 자동 감사는 tests/package_audit.py에 있다. VisionVerification.md는 0.3 당시 기록이다.
 
@@ -23,13 +23,13 @@ macOS 소비자에서 CMake가 비시스템 PNG 프레임워크를 선택하면 
 
 중단된 CMake 백엔드는 `--resume --only cad --jobs 8`처럼 기존 설정을 재사용할 수 있다. 소스·설치 prefix·캐시에 남은 빌드 옵션의 일치를 검사하고 캐시 SHA-256 및 선언된 설정 인자를 provenance에 기록한다. 상류가 제거한 미사용 스위치는 비교에서 제외하므로 새로운 기능 구성을 바꾸려면 `--resume` 없이 다시 구성한다. 이 옵션은 이미 구성된 소스 빌드에만 사용한다.
 
-`tools/dependencies.json`이 공식 소스 URL·버전·SHA-256을 고정한다. `tools/bootstrap_dependencies.py`는 다운로드·체크섬 검사·추출 경로 검사 후 build/dependencies/에만 작업한다. 원본 archive·소스·설정·빌드·로그·설치 prefix를 보존하고 라이브러리별 provenance JSON에 실행한 명령을 기록한다. OpenH264는 BSD 소프트웨어 H.264 인코더이다. FFmpeg는 공유 LGPL 구성으로 네트워크·GPL·nonfree·자동 외부 라이브러리 탐색을 끈다. OpenUSD는 Python·이미징·렌더러를 제외한 네이티브 장면 라이브러리이며 oneTBB를 사용한다. C++ 라이브러리는 Python 인터프리터를 실행하지 않는다.
+`tools/dependencies.json`이 공식 소스 URL·버전·SHA-256을 고정한다. `tools/bootstrap_dependencies.py`는 다운로드·체크섬 검사·추출 경로 검사 후 원본 archive·소스·로그·설치 prefix를 `resources/dependencies/`에 둔다. 컴파일 중간 결과는 `build/dependency-build/`에 둔다. 라이브러리별 provenance JSON에 실행한 명령을 기록한다. OpenH264는 BSD 소프트웨어 H.264 인코더이다. FFmpeg는 공유 LGPL 구성으로 네트워크·GPL·nonfree·자동 외부 라이브러리 탐색을 끈다. OpenUSD는 Python·이미징·렌더러를 제외한 네이티브 장면 라이브러리이며 oneTBB를 사용한다. C++ 라이브러리는 Python 인터프리터를 실행하지 않는다.
 
 ```sh
 python3 -B tools/bootstrap_dependencies.py --jobs 4
-export PKG_CONFIG_PATH="$PWD/build/dependencies/prefix/lib/pkgconfig"
+export PKG_CONFIG_PATH="$PWD/resources/dependencies/prefix/lib/pkgconfig"
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_PREFIX_PATH="$PWD/build/dependencies/prefix;$PWD/../build/congregation-native/prefix" \
+  -DCMAKE_PREFIX_PATH="$PWD/resources/dependencies/prefix;$PWD/../build/congregation-native/prefix" \
   -DCMAKE_FIND_FRAMEWORK=LAST -DCMAKE_DISABLE_FIND_PACKAGE_Qt5=ON \
   -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON
 cmake --build build --parallel 4
@@ -40,20 +40,13 @@ image 네이티브 키트는 iiSDKBuilder/tools/build_native_kit.py가 만든 PN
 
 ## 독립 패키지와 경로 이동 검사
 
-`cmake --install`은 SDK 래퍼를 설치한다. `tools/stage_package.py`는 backend prefix 및 지정 image prefix에서 필요한 정적 이미지 코덱·헤더·export·라이선스와 SDK를 모아 하나의 build/ 하위 배포 prefix를 만든다. 기존 출력 디렉터리와 build/ 밖의 목적지를 거절한다. 기본 image prefix는 SDK/build/congregation-native/prefix이다. 현재 staging 도구의 정적 이미지 라이브러리 파일 목록은 해당 POSIX 네이티브 키트용이며 다른 툴체인의 파일명은 별도로 구성해야 한다.
+`cmake --install`은 SDK 래퍼를 설치한다. `tools/stage_package.py`는 backend prefix 및 지정 image prefix에서 필요한 정적 이미지 코덱·헤더·export·라이선스와 SDK를 모아 `resources/staging/` 하위 배포 prefix를 만든다. 기존 출력 디렉터리와 이 루트 밖의 목적지를 거절한다. 기본 image prefix는 SDK/build/congregation-native/prefix이다. 현재 staging 도구의 정적 이미지 라이브러리 파일 목록은 해당 POSIX 네이티브 키트용이며 다른 툴체인의 파일명은 별도로 구성해야 한다.
 
 ```sh
-python3 -B tools/stage_package.py --destination build/package
-mv build/package build/relocated
-export PKG_CONFIG_PATH="$PWD/build/relocated/lib/pkgconfig"
-cmake -S tests/consumer -B build/consumer/build -G Ninja \
-  -DCMAKE_PREFIX_PATH="$PWD/build/relocated" -DCMAKE_FIND_FRAMEWORK=LAST \
-  -DCMAKE_DISABLE_FIND_PACKAGE_Qt5=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON
-cmake --build build/consumer/build --parallel 4
-ctest --test-dir build/consumer/build --output-on-failure
+python3 -B tools/stage_package.py --destination resources/staging/package
 ```
 
-새 이미지 전용 소비자는 `-DVISUAL_IMAGE_ONLY=ON`으로 같은 consumer를 별도 build/ 아래 구성한다. 이때 FFmpeg/OpenUSD 패키지 검색을 비활성화해도 기존 호환 API의 PNG 왕복이 실행되어야 한다. 전체 소비자는 PNG → 실제 비디오 프레임 → AR 점군 → USD 문서의 경로를 실행한다. 독립형 예제는 example/CMakeLists.txt를 사용한다. macOS에서는 Release·sanitizer·전체 소비자·이미지 전용 소비자의 JUnit 기록을 만든 뒤 `python3 -B tests/package_audit.py`로 헤더·객체·백엔드 바이트와 실제 로드 경로를 다시 검사할 수 있다. 구체적인 명령은 Verification.md에 있다.
+소비자 검사는 사용 중인 빌드가 없을 때 `build/`를 소비자 설정으로 교체하여 수행하고, 검사가 끝나면 모듈 빌드를 다시 구성한다. 이미지 전용 소비자는 `-DVISUAL_IMAGE_ONLY=ON`으로 구성한다. 테스트 파일은 `resources/.t/`의 임시 공간에서 생성하고 검사 후 정리한다. 과거 다중 빌드와 JUnit 파일을 전제로 하는 `tests/package_audit.py`는 과거 검증 기록용이며 현재 클린 빌드의 자동 검사는 아니다.
 
 ## 라이선스와 소스 자료
 

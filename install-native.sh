@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 module_dir="$(cd "$(dirname "$0")" && pwd)"
-sdk_prefix="${IISDK_NATIVE_PREFIX:-$module_dir/../build/congregation-native/prefix}"
-backend_prefix="$module_dir/build/dependencies/prefix"
-if [[ "${IIVISUALCODEC_BOOTSTRAP:-1}" == 1 ]]; then
+sdk_prefix="${IISDK_NATIVE_PREFIX:-$HOME/.local/SDK/iiVisualCodec}"
+backend_prefix="$module_dir/resources/dependencies/prefix"
+if [[ "${IIVISUALCODEC_BOOTSTRAP:-0}" == 1 ]]; then
     python3 "$module_dir/tools/bootstrap_dependencies.py" --jobs "${BUILD_JOBS:-4}"
 fi
 export PKG_CONFIG_PATH="$backend_prefix/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"

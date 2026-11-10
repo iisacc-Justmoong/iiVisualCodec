@@ -10,9 +10,9 @@
   },
   "source": {
     "path": "docs/Packaging.md",
-    "sha256": "4eccd2ec18bb0e3df1e662fc6ac577655f312e0a17c170611558c6c5ce9f7149",
-    "bytes": 8474,
-    "line_count": 62,
+    "sha256": "b8f5b386f24955cf4766cdf9f9d2bc462e8027c83b064e64f71f2feae421f3b0",
+    "bytes": 7935,
+    "line_count": 55,
     "encoding": "utf-8",
     "language": "ko"
   },
@@ -43,7 +43,7 @@
       "kind": "paragraph",
       "start_line": 3,
       "end_line": 3,
-      "raw": "0.4는 Geometry·Asset3D·CAD를 추가한다. Assimp 6.0.5와 OCCT 8.0.1은 공식 소스 archive 및 SHA-256을 고정한다. 각각 `bootstrap_dependencies.py --only 3d`, `--only cad`로 빌드한다. 공통 Geometry만 요청하면 두 백엔드와 OpenCV·FFmpeg·OpenUSD를 탐색하지 않는다. 기존 `build/relocated`에는 `python3 -B tools/stage_package.py --refresh-geometry --destination build/relocated` 후 `cmake --install build --prefix \"$PWD/build/relocated\"`로 새 모듈을 합친다.\n"
+      "raw": "0.4는 Geometry·Asset3D·CAD를 추가한다. Assimp 6.0.5와 OCCT 8.0.1은 공식 소스 archive 및 SHA-256을 고정한다. 각각 `bootstrap_dependencies.py --only 3d`, `--only cad`로 빌드한다. 공통 Geometry만 요청하면 두 백엔드와 OpenCV·FFmpeg·OpenUSD를 탐색하지 않는다. 기존 스테이지에는 `python3 -B tools/stage_package.py --refresh-geometry --destination resources/staging/relocated` 후 `cmake --install build --prefix \"$PWD/resources/staging/relocated\"`로 새 모듈을 합친다.\n"
     },
     {
       "id": "b000004",
@@ -71,7 +71,7 @@
       "kind": "paragraph",
       "start_line": 7,
       "end_line": 7,
-      "raw": "0.3은 Vision·OpenCV 구성요소도 제공한다. OpenCV 4.14.0은 같은 체크섬 매니페스트에 고정하고 `bootstrap_dependencies.py --only opencv`로 독립 빌드한다. 전체 bootstrap과 새 패키지 staging은 OpenCV 헤더·공유 라이브러리·CMake export·재배포 고지를 포함한다. 기존 build/ 하위 키트에는 `python3 -B tools/stage_package.py --refresh-opencv --destination build/relocated`로 OpenCV payload를 합친 뒤 SDK를 다시 설치할 수 있다.\n"
+      "raw": "0.3은 Vision·OpenCV 구성요소도 제공한다. OpenCV 4.14.0은 같은 체크섬 매니페스트에 고정하고 `bootstrap_dependencies.py --only opencv`로 독립 빌드한다. 전체 bootstrap과 새 패키지 staging은 OpenCV 헤더·공유 라이브러리·CMake export·재배포 고지를 포함한다. 기존 스테이지에는 `python3 -B tools/stage_package.py --refresh-opencv --destination resources/staging/relocated`로 OpenCV payload를 합칠 수 있다.\n"
     },
     {
       "id": "b000008",
@@ -157,7 +157,7 @@
       "kind": "paragraph",
       "start_line": 26,
       "end_line": 26,
-      "raw": "`tools/dependencies.json`이 공식 소스 URL·버전·SHA-256을 고정한다. `tools/bootstrap_dependencies.py`는 다운로드·체크섬 검사·추출 경로 검사 후 build/dependencies/에만 작업한다. 원본 archive·소스·설정·빌드·로그·설치 prefix를 보존하고 라이브러리별 provenance JSON에 실행한 명령을 기록한다. OpenH264는 BSD 소프트웨어 H.264 인코더이다. FFmpeg는 공유 LGPL 구성으로 네트워크·GPL·nonfree·자동 외부 라이브러리 탐색을 끈다. OpenUSD는 Python·이미징·렌더러를 제외한 네이티브 장면 라이브러리이며 oneTBB를 사용한다. C++ 라이브러리는 Python 인터프리터를 실행하지 않는다.\n"
+      "raw": "`tools/dependencies.json`이 공식 소스 URL·버전·SHA-256을 고정한다. `tools/bootstrap_dependencies.py`는 다운로드·체크섬 검사·추출 경로 검사 후 원본 archive·소스·로그·설치 prefix를 `resources/dependencies/`에 둔다. 컴파일 중간 결과는 `build/dependency-build/`에 둔다. 라이브러리별 provenance JSON에 실행한 명령을 기록한다. OpenH264는 BSD 소프트웨어 H.264 인코더이다. FFmpeg는 공유 LGPL 구성으로 네트워크·GPL·nonfree·자동 외부 라이브러리 탐색을 끈다. OpenUSD는 Python·이미징·렌더러를 제외한 네이티브 장면 라이브러리이며 oneTBB를 사용한다. C++ 라이브러리는 Python 인터프리터를 실행하지 않는다.\n"
     },
     {
       "id": "b000020",
@@ -171,9 +171,9 @@
       "kind": "fenced_code",
       "start_line": 28,
       "end_line": 37,
-      "raw": "```sh\npython3 -B tools/bootstrap_dependencies.py --jobs 4\nexport PKG_CONFIG_PATH=\"$PWD/build/dependencies/prefix/lib/pkgconfig\"\ncmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \\\n  -DCMAKE_PREFIX_PATH=\"$PWD/build/dependencies/prefix;$PWD/../build/congregation-native/prefix\" \\\n  -DCMAKE_FIND_FRAMEWORK=LAST -DCMAKE_DISABLE_FIND_PACKAGE_Qt5=ON \\\n  -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON\ncmake --build build --parallel 4\nctest --test-dir build --output-on-failure\n```\n",
+      "raw": "```sh\npython3 -B tools/bootstrap_dependencies.py --jobs 4\nexport PKG_CONFIG_PATH=\"$PWD/resources/dependencies/prefix/lib/pkgconfig\"\ncmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \\\n  -DCMAKE_PREFIX_PATH=\"$PWD/resources/dependencies/prefix;$PWD/../build/congregation-native/prefix\" \\\n  -DCMAKE_FIND_FRAMEWORK=LAST -DCMAKE_DISABLE_FIND_PACKAGE_Qt5=ON \\\n  -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON\ncmake --build build --parallel 4\nctest --test-dir build --output-on-failure\n```\n",
       "language": "sh",
-      "code": "python3 -B tools/bootstrap_dependencies.py --jobs 4\nexport PKG_CONFIG_PATH=\"$PWD/build/dependencies/prefix/lib/pkgconfig\"\ncmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \\\n  -DCMAKE_PREFIX_PATH=\"$PWD/build/dependencies/prefix;$PWD/../build/congregation-native/prefix\" \\\n  -DCMAKE_FIND_FRAMEWORK=LAST -DCMAKE_DISABLE_FIND_PACKAGE_Qt5=ON \\\n  -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON\ncmake --build build --parallel 4\nctest --test-dir build --output-on-failure\n",
+      "code": "python3 -B tools/bootstrap_dependencies.py --jobs 4\nexport PKG_CONFIG_PATH=\"$PWD/resources/dependencies/prefix/lib/pkgconfig\"\ncmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \\\n  -DCMAKE_PREFIX_PATH=\"$PWD/resources/dependencies/prefix;$PWD/../build/congregation-native/prefix\" \\\n  -DCMAKE_FIND_FRAMEWORK=LAST -DCMAKE_DISABLE_FIND_PACKAGE_Qt5=ON \\\n  -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON\ncmake --build build --parallel 4\nctest --test-dir build --output-on-failure\n",
       "closed": true
     },
     {
@@ -218,7 +218,7 @@
       "kind": "paragraph",
       "start_line": 43,
       "end_line": 43,
-      "raw": "`cmake --install`은 SDK 래퍼를 설치한다. `tools/stage_package.py`는 backend prefix 및 지정 image prefix에서 필요한 정적 이미지 코덱·헤더·export·라이선스와 SDK를 모아 하나의 build/ 하위 배포 prefix를 만든다. 기존 출력 디렉터리와 build/ 밖의 목적지를 거절한다. 기본 image prefix는 SDK/build/congregation-native/prefix이다. 현재 staging 도구의 정적 이미지 라이브러리 파일 목록은 해당 POSIX 네이티브 키트용이며 다른 툴체인의 파일명은 별도로 구성해야 한다.\n"
+      "raw": "`cmake --install`은 SDK 래퍼를 설치한다. `tools/stage_package.py`는 backend prefix 및 지정 image prefix에서 필요한 정적 이미지 코덱·헤더·export·라이선스와 SDK를 모아 `resources/staging/` 하위 배포 prefix를 만든다. 기존 출력 디렉터리와 이 루트 밖의 목적지를 거절한다. 기본 image prefix는 SDK/build/congregation-native/prefix이다. 현재 staging 도구의 정적 이미지 라이브러리 파일 목록은 해당 POSIX 네이티브 키트용이며 다른 툴체인의 파일명은 별도로 구성해야 한다.\n"
     },
     {
       "id": "b000028",
@@ -231,38 +231,38 @@
       "id": "b000029",
       "kind": "fenced_code",
       "start_line": 45,
-      "end_line": 54,
-      "raw": "```sh\npython3 -B tools/stage_package.py --destination build/package\nmv build/package build/relocated\nexport PKG_CONFIG_PATH=\"$PWD/build/relocated/lib/pkgconfig\"\ncmake -S tests/consumer -B build/consumer/build -G Ninja \\\n  -DCMAKE_PREFIX_PATH=\"$PWD/build/relocated\" -DCMAKE_FIND_FRAMEWORK=LAST \\\n  -DCMAKE_DISABLE_FIND_PACKAGE_Qt5=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON\ncmake --build build/consumer/build --parallel 4\nctest --test-dir build/consumer/build --output-on-failure\n```\n",
+      "end_line": 47,
+      "raw": "```sh\npython3 -B tools/stage_package.py --destination resources/staging/package\n```\n",
       "language": "sh",
-      "code": "python3 -B tools/stage_package.py --destination build/package\nmv build/package build/relocated\nexport PKG_CONFIG_PATH=\"$PWD/build/relocated/lib/pkgconfig\"\ncmake -S tests/consumer -B build/consumer/build -G Ninja \\\n  -DCMAKE_PREFIX_PATH=\"$PWD/build/relocated\" -DCMAKE_FIND_FRAMEWORK=LAST \\\n  -DCMAKE_DISABLE_FIND_PACKAGE_Qt5=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON\ncmake --build build/consumer/build --parallel 4\nctest --test-dir build/consumer/build --output-on-failure\n",
+      "code": "python3 -B tools/stage_package.py --destination resources/staging/package\n",
       "closed": true
     },
     {
       "id": "b000030",
       "kind": "blank",
-      "start_line": 55,
-      "end_line": 55,
+      "start_line": 48,
+      "end_line": 48,
       "raw": "\n"
     },
     {
       "id": "b000031",
       "kind": "paragraph",
-      "start_line": 56,
-      "end_line": 56,
-      "raw": "새 이미지 전용 소비자는 `-DVISUAL_IMAGE_ONLY=ON`으로 같은 consumer를 별도 build/ 아래 구성한다. 이때 FFmpeg/OpenUSD 패키지 검색을 비활성화해도 기존 호환 API의 PNG 왕복이 실행되어야 한다. 전체 소비자는 PNG → 실제 비디오 프레임 → AR 점군 → USD 문서의 경로를 실행한다. 독립형 예제는 example/CMakeLists.txt를 사용한다. macOS에서는 Release·sanitizer·전체 소비자·이미지 전용 소비자의 JUnit 기록을 만든 뒤 `python3 -B tests/package_audit.py`로 헤더·객체·백엔드 바이트와 실제 로드 경로를 다시 검사할 수 있다. 구체적인 명령은 Verification.md에 있다.\n"
+      "start_line": 49,
+      "end_line": 49,
+      "raw": "소비자 검사는 사용 중인 빌드가 없을 때 `build/`를 소비자 설정으로 교체하여 수행하고, 검사가 끝나면 모듈 빌드를 다시 구성한다. 이미지 전용 소비자는 `-DVISUAL_IMAGE_ONLY=ON`으로 구성한다. 테스트 파일은 `resources/.t/`의 임시 공간에서 생성하고 검사 후 정리한다. 과거 다중 빌드와 JUnit 파일을 전제로 하는 `tests/package_audit.py`는 과거 검증 기록용이며 현재 클린 빌드의 자동 검사는 아니다.\n"
     },
     {
       "id": "b000032",
       "kind": "blank",
-      "start_line": 57,
-      "end_line": 57,
+      "start_line": 50,
+      "end_line": 50,
       "raw": "\n"
     },
     {
       "id": "b000033",
       "kind": "heading",
-      "start_line": 58,
-      "end_line": 58,
+      "start_line": 51,
+      "end_line": 51,
       "raw": "## 라이선스와 소스 자료\n",
       "level": 2,
       "title": "라이선스와 소스 자료"
@@ -270,29 +270,29 @@
     {
       "id": "b000034",
       "kind": "blank",
-      "start_line": 59,
-      "end_line": 59,
+      "start_line": 52,
+      "end_line": 52,
       "raw": "\n"
     },
     {
       "id": "b000035",
       "kind": "paragraph",
-      "start_line": 60,
-      "end_line": 60,
+      "start_line": 53,
+      "end_line": 53,
       "raw": "SDK 자체는 MIT이다. OpenH264·OpenUSD·oneTBB의 재배포 라이선스·고지는 각각 원본의 LICENSE/NOTICE에서 가져온다. FFmpeg를 포함한 패키지는 GPL/nonfree를 비활성화한 공유 라이브러리, 실제 configure 명령, 고정된 원본 소스 archive, LGPL 고지를 포함한다. FFmpeg 공식 지침은 [공식 라이선스 안내](https://ffmpeg.org/legal.html)를 따른다. 최종 제품에서의 라이브러리 교체·재링크 조건, 고지와 소스 제공은 제품 배포자가 유지해야 한다. 외부 FFmpeg 도구를 사용한 테스트와 SDK가 링크하는 LGPL FFmpeg는 구분한다.\n"
     },
     {
       "id": "b000036",
       "kind": "blank",
-      "start_line": 61,
-      "end_line": 61,
+      "start_line": 54,
+      "end_line": 54,
       "raw": "\n"
     },
     {
       "id": "b000037",
       "kind": "paragraph",
-      "start_line": 62,
-      "end_line": 62,
+      "start_line": 55,
+      "end_line": 55,
       "raw": "OpenUSD의 빌드 선택과 필수 의존성은 [공식 빌드 문서](https://github.com/PixarAnimationStudios/OpenUSD/blob/v26.11.1/BUILDING.md)에 근거한다. 사용자 설치본 ~/.local과 실행 중인 제품 앱은 staging 단계에서 수정하지 않는다.\n"
     }
   ],
@@ -327,7 +327,7 @@
       "level": 2,
       "title": "라이선스와 소스 자료",
       "anchor": "라이선스와-소스-자료",
-      "start_line": 58
+      "start_line": 51
     }
   ],
   "indexes": {
@@ -335,7 +335,7 @@
       {
         "block_id": "b000003",
         "line": 3,
-        "text": "0.4는 Geometry·Asset3D·CAD를 추가한다. Assimp 6.0.5와 OCCT 8.0.1은 공식 소스 archive 및 SHA-256을 고정한다. 각각 `bootstrap_dependencies.py --only 3d`, `--only cad`로 빌드한다. 공통 Geometry만 요청하면 두 백엔드와 OpenCV·FFmpeg·OpenUSD를 탐색하지 않는다. 기존 `build/relocated`에는 `python3 -B tools/stage_package.py --refresh-geometry --destination build/relocated` 후 `cmake --install build --prefix \"$PWD/build/relocated\"`로 새 모듈을 합친다.",
+        "text": "0.4는 Geometry·Asset3D·CAD를 추가한다. Assimp 6.0.5와 OCCT 8.0.1은 공식 소스 archive 및 SHA-256을 고정한다. 각각 `bootstrap_dependencies.py --only 3d`, `--only cad`로 빌드한다. 공통 Geometry만 요청하면 두 백엔드와 OpenCV·FFmpeg·OpenUSD를 탐색하지 않는다. 기존 스테이지에는 `python3 -B tools/stage_package.py --refresh-geometry --destination resources/staging/relocated` 후 `cmake --install build --prefix \"$PWD/resources/staging/relocated\"`로 새 모듈을 합친다.",
         "basis": "lexical_match",
         "context": "paragraph"
       },
@@ -356,7 +356,7 @@
       {
         "block_id": "b000019",
         "line": 26,
-        "text": "`tools/dependencies.json`이 공식 소스 URL·버전·SHA-256을 고정한다. `tools/bootstrap_dependencies.py`는 다운로드·체크섬 검사·추출 경로 검사 후 build/dependencies/에만 작업한다. 원본 archive·소스·설정·빌드·로그·설치 prefix를 보존하고 라이브러리별 provenance JSON에 실행한 명령을 기록한다. OpenH264는 BSD 소프트웨어 H.264 인코더이다. FFmpeg는 공유 LGPL 구성으로 네트워크·GPL·nonfree·자동 외부 라이브러리 탐색을 끈다. OpenUSD는 Python·이미징·렌더러를 제외한 네이티브 장면 라이브러리이며 oneTBB를 사용한다. C++ 라이브러리는 Python 인터프리터를 실행하지 않는다.",
+        "text": "`tools/dependencies.json`이 공식 소스 URL·버전·SHA-256을 고정한다. `tools/bootstrap_dependencies.py`는 다운로드·체크섬 검사·추출 경로 검사 후 원본 archive·소스·로그·설치 prefix를 `resources/dependencies/`에 둔다. 컴파일 중간 결과는 `build/dependency-build/`에 둔다. 라이브러리별 provenance JSON에 실행한 명령을 기록한다. OpenH264는 BSD 소프트웨어 H.264 인코더이다. FFmpeg는 공유 LGPL 구성으로 네트워크·GPL·nonfree·자동 외부 라이브러리 탐색을 끈다. OpenUSD는 Python·이미징·렌더러를 제외한 네이티브 장면 라이브러리이며 oneTBB를 사용한다. C++ 라이브러리는 Python 인터프리터를 실행하지 않는다.",
         "basis": "lexical_match",
         "context": "paragraph"
       },
@@ -370,20 +370,20 @@
       {
         "block_id": "b000027",
         "line": 43,
-        "text": "`cmake --install`은 SDK 래퍼를 설치한다. `tools/stage_package.py`는 backend prefix 및 지정 image prefix에서 필요한 정적 이미지 코덱·헤더·export·라이선스와 SDK를 모아 하나의 build/ 하위 배포 prefix를 만든다. 기존 출력 디렉터리와 build/ 밖의 목적지를 거절한다. 기본 image prefix는 SDK/build/congregation-native/prefix이다. 현재 staging 도구의 정적 이미지 라이브러리 파일 목록은 해당 POSIX 네이티브 키트용이며 다른 툴체인의 파일명은 별도로 구성해야 한다.",
+        "text": "`cmake --install`은 SDK 래퍼를 설치한다. `tools/stage_package.py`는 backend prefix 및 지정 image prefix에서 필요한 정적 이미지 코덱·헤더·export·라이선스와 SDK를 모아 `resources/staging/` 하위 배포 prefix를 만든다. 기존 출력 디렉터리와 이 루트 밖의 목적지를 거절한다. 기본 image prefix는 SDK/build/congregation-native/prefix이다. 현재 staging 도구의 정적 이미지 라이브러리 파일 목록은 해당 POSIX 네이티브 키트용이며 다른 툴체인의 파일명은 별도로 구성해야 한다.",
         "basis": "lexical_match",
         "context": "paragraph"
       },
       {
         "block_id": "b000035",
-        "line": 60,
+        "line": 53,
         "text": "SDK 자체는 MIT이다. OpenH264·OpenUSD·oneTBB의 재배포 라이선스·고지는 각각 원본의 LICENSE/NOTICE에서 가져온다. FFmpeg를 포함한 패키지는 GPL/nonfree를 비활성화한 공유 라이브러리, 실제 configure 명령, 고정된 원본 소스 archive, LGPL 고지를 포함한다. FFmpeg 공식 지침은 [공식 라이선스 안내](https://ffmpeg.org/legal.html)를 따른다. 최종 제품에서의 라이브러리 교체·재링크 조건, 고지와 소스 제공은 제품 배포자가 유지해야 한다. 외부 FFmpeg 도구를 사용한 테스트와 SDK가 링크하는 LGPL FFmpeg는 구분한다.",
         "basis": "lexical_match",
         "context": "paragraph"
       },
       {
         "block_id": "b000037",
-        "line": 62,
+        "line": 55,
         "text": "OpenUSD의 빌드 선택과 필수 의존성은 [공식 빌드 문서](https://github.com/PixarAnimationStudios/OpenUSD/blob/v26.11.1/BUILDING.md)에 근거한다. 사용자 설치본 ~/.local과 실행 중인 제품 앱은 staging 단계에서 수정하지 않는다.",
         "basis": "lexical_match",
         "context": "paragraph"
@@ -393,12 +393,12 @@
       {
         "block_id": "b000021",
         "language": "sh",
-        "code": "python3 -B tools/bootstrap_dependencies.py --jobs 4\nexport PKG_CONFIG_PATH=\"$PWD/build/dependencies/prefix/lib/pkgconfig\"\ncmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \\\n  -DCMAKE_PREFIX_PATH=\"$PWD/build/dependencies/prefix;$PWD/../build/congregation-native/prefix\" \\\n  -DCMAKE_FIND_FRAMEWORK=LAST -DCMAKE_DISABLE_FIND_PACKAGE_Qt5=ON \\\n  -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON\ncmake --build build --parallel 4\nctest --test-dir build --output-on-failure\n"
+        "code": "python3 -B tools/bootstrap_dependencies.py --jobs 4\nexport PKG_CONFIG_PATH=\"$PWD/resources/dependencies/prefix/lib/pkgconfig\"\ncmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \\\n  -DCMAKE_PREFIX_PATH=\"$PWD/resources/dependencies/prefix;$PWD/../build/congregation-native/prefix\" \\\n  -DCMAKE_FIND_FRAMEWORK=LAST -DCMAKE_DISABLE_FIND_PACKAGE_Qt5=ON \\\n  -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON\ncmake --build build --parallel 4\nctest --test-dir build --output-on-failure\n"
       },
       {
         "block_id": "b000029",
         "language": "sh",
-        "code": "python3 -B tools/stage_package.py --destination build/package\nmv build/package build/relocated\nexport PKG_CONFIG_PATH=\"$PWD/build/relocated/lib/pkgconfig\"\ncmake -S tests/consumer -B build/consumer/build -G Ninja \\\n  -DCMAKE_PREFIX_PATH=\"$PWD/build/relocated\" -DCMAKE_FIND_FRAMEWORK=LAST \\\n  -DCMAKE_DISABLE_FIND_PACKAGE_Qt5=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON\ncmake --build build/consumer/build --parallel 4\nctest --test-dir build/consumer/build --output-on-failure\n"
+        "code": "python3 -B tools/stage_package.py --destination resources/staging/package\n"
       }
     ],
     "links": [
@@ -407,14 +407,14 @@
         "label": "공식 라이선스 안내",
         "target": "https://ffmpeg.org/legal.html",
         "kind": "external",
-        "line": 60
+        "line": 53
       },
       {
         "block_id": "b000037",
         "label": "공식 빌드 문서",
         "target": "https://github.com/PixarAnimationStudios/OpenUSD/blob/v26.11.1/BUILDING.md",
         "kind": "external",
-        "line": 62
+        "line": 55
       }
     ],
     "tables": []

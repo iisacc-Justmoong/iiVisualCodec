@@ -1,10 +1,13 @@
 """Check exported 3D containers independently of Assimp and OCCT using stdlib."""
+import argparse
 import json
 import math
+import os
 from pathlib import Path
 import shutil
 import struct
 import subprocess
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -92,10 +95,22 @@ def gltf(path):
                 instance_triangles=instance_triangles, world_bounds_m=bounds)
 
 def main():
-    root = ROOT / "build/geometry-interoperability"
-    root.mkdir(parents=True, exist_ok=True)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--workspace", type=Path, help=argparse.SUPPRESS)
+    args = parser.parse_args()
+    if args.workspace is None:
+        sys.path.insert(0, os.environ.get("IIVISUALCODEC_TEST_PROVIDER_PYTHON_DIR",
+            str(Path.home() / ".local/SDK/iiFileProvider/share/iiFileProvider/python")))
+        import resource_runner
+        return resource_runner.run(ROOT / "resources", [sys.executable, "-B", __file__,
+            "--workspace", "@WORK@", *sys.argv[1:]])
+    root = args.workspace.resolve()
+    if not root.is_relative_to((ROOT / "resources/.t").resolve()):
+        parser.error("The test workspace must be under resources/.t/")
     report = {}
-    fixtures = ROOT / "build/asset3d-contracts"
+    fixtures = root / "asset3d-contracts"
+    subprocess.run([str(ROOT / "build/iiVisualCodec_asset3d"), str(fixtures)],
+                   check=True, timeout=90)
     for name in ("scene.glb", "scene.gltf"):
         report[name] = gltf(fixtures / name / name)
         assert report[name]["triangles_in_mesh_pool"] == 1
@@ -103,9 +118,6 @@ def main():
         for actual, expected in zip(sum(report[name]["world_bounds_m"], []), [2,0,-2,3,0,0]):
             assert abs(actual-expected) < 1e-6, (name, actual, expected)
     directory = root / "part"
-    if directory.exists():
-        # This script owns this exact generated fixture directory only.
-        shutil.rmtree(directory)
     process = subprocess.run([str(ROOT / "build/iiVisualCodec_geometry_pipeline"), str(directory)],
                              capture_output=True, text=True, timeout=90)
     assert process.returncode == 0, process.stderr
@@ -140,4 +152,4 @@ def main():
     print("Independent GLB/glTF buffers, STL winding/metric volume, STEP units and Apple USD checks passed")
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

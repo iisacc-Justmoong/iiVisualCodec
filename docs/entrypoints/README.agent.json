@@ -10,9 +10,9 @@
   },
   "source": {
     "path": "README.md",
-    "sha256": "64a37f300e94e994b647d0f4698ffa70a5463f372b0e47ff000a1e9d3fc89403",
-    "bytes": 8156,
-    "line_count": 134,
+    "sha256": "6706a16c8acd01db2fea40df44137f14cb5ebffc9ad157f151a1f926561c74cb",
+    "bytes": 8411,
+    "line_count": 138,
     "encoding": "utf-8",
     "language": "en"
   },
@@ -192,122 +192,122 @@
       "id": "b000017",
       "kind": "paragraph",
       "start_line": 59,
-      "end_line": 67,
-      "raw": "The default dependency bootstrap pins a GPL/nonfree-disabled **shared LGPL\nFFmpeg 8.0.1**, **OpenH264 2.6.0**, **OpenUSD 26.11.1**, **oneTBB 2021.12.0** and\nApache-2.0 **OpenCV 4.14.0**, BSD **Assimp 6.0.5** and shared LGPL-2.1-with-exception\n**Open CASCADE 8.0.1**. It verifies source\nSHA-256 values and records build commands under `build/dependencies/`. Source\narchives and license notices must accompany any redistribution of FFmpeg; the\napplication's own code remains separate. The module rejects GPL/nonfree FFmpeg\nbuilds at runtime. Image dependencies are libpng >= 1.6, libjpeg, zlib,\nWebP >= 1 and TIFF >= 4.5; Linux ICC conversion also needs Little CMS 2.\n"
+      "end_line": 68,
+      "raw": "The default dependency bootstrap pins a GPL/nonfree-disabled **shared LGPL\nFFmpeg 8.0.1**, **OpenH264 2.6.0**, **OpenUSD 26.11.1**, **oneTBB 2021.12.0** and\nApache-2.0 **OpenCV 4.14.0**, BSD **Assimp 6.0.5** and shared LGPL-2.1-with-exception\n**Open CASCADE 8.0.1**. It verifies source\nSHA-256 values and keeps sources, backend libraries and provenance under\n`resources/dependencies/`. Bootstrap intermediates use `build/`. Source\narchives and license notices must accompany any redistribution of FFmpeg; the\napplication's own code remains separate. The module rejects GPL/nonfree FFmpeg\nbuilds at runtime. Image dependencies are libpng >= 1.6, libjpeg, zlib,\nWebP >= 1 and TIFF >= 4.5; Linux ICC conversion also needs Little CMS 2.\n"
     },
     {
       "id": "b000018",
       "kind": "blank",
-      "start_line": 68,
-      "end_line": 68,
+      "start_line": 69,
+      "end_line": 69,
       "raw": "\n"
     },
     {
       "id": "b000019",
       "kind": "fenced_code",
-      "start_line": 69,
-      "end_line": 78,
-      "raw": "```sh\npython3 tools/bootstrap_dependencies.py --jobs 4\nexport PKG_CONFIG_PATH=\"$PWD/build/dependencies/prefix/lib/pkgconfig\"\ncmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \\\n  -DCMAKE_PREFIX_PATH=\"$PWD/build/dependencies/prefix\" \\\n  -DCMAKE_FIND_FRAMEWORK=LAST -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON\ncmake --build build --parallel 4\nctest --test-dir build --output-on-failure\ncmake --install build --prefix \"$PWD/build/install\"\n```\n",
+      "start_line": 70,
+      "end_line": 79,
+      "raw": "```sh\npython3 tools/bootstrap_dependencies.py --jobs 4\nexport PKG_CONFIG_PATH=\"$PWD/resources/dependencies/prefix/lib/pkgconfig\"\ncmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \\\n  -DCMAKE_PREFIX_PATH=\"$PWD/resources/dependencies/prefix\" \\\n  -DCMAKE_FIND_FRAMEWORK=LAST -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON\ncmake --build build --parallel 4\nctest --test-dir build --output-on-failure\ncmake --install build --prefix \"$HOME/.local/SDK/iiVisualCodec\"\n```\n",
       "language": "sh",
-      "code": "python3 tools/bootstrap_dependencies.py --jobs 4\nexport PKG_CONFIG_PATH=\"$PWD/build/dependencies/prefix/lib/pkgconfig\"\ncmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \\\n  -DCMAKE_PREFIX_PATH=\"$PWD/build/dependencies/prefix\" \\\n  -DCMAKE_FIND_FRAMEWORK=LAST -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON\ncmake --build build --parallel 4\nctest --test-dir build --output-on-failure\ncmake --install build --prefix \"$PWD/build/install\"\n",
+      "code": "python3 tools/bootstrap_dependencies.py --jobs 4\nexport PKG_CONFIG_PATH=\"$PWD/resources/dependencies/prefix/lib/pkgconfig\"\ncmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \\\n  -DCMAKE_PREFIX_PATH=\"$PWD/resources/dependencies/prefix\" \\\n  -DCMAKE_FIND_FRAMEWORK=LAST -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON\ncmake --build build --parallel 4\nctest --test-dir build --output-on-failure\ncmake --install build --prefix \"$HOME/.local/SDK/iiVisualCodec\"\n",
       "closed": true
     },
     {
       "id": "b000020",
       "kind": "blank",
-      "start_line": 79,
-      "end_line": 79,
+      "start_line": 80,
+      "end_line": 80,
       "raw": "\n"
     },
     {
       "id": "b000021",
       "kind": "paragraph",
-      "start_line": 80,
-      "end_line": 86,
-      "raw": "For image/spatial-only builds, pass `-DIIVISUALCODEC_VIDEO=OFF\n-DIIVISUALCODEC_USD=OFF -DIIVISUALCODEC_OPENCV=OFF -DIIVISUALCODEC_3D=OFF\n-DIIVISUALCODEC_CAD=OFF`. Native Windows FFmpeg builds require an MSYS2 toolchain;\nthe C++ SDK also accepts externally built backends through CMake/pkg-config.\n`install-native.sh` bootstraps the backends and installs into the shared native\nkit under `SDK/build/` by default; `IISDK_NATIVE_PREFIX` changes that destination.\nThe backend prefix must accompany the installed SDK in the consuming kit.\n"
+      "start_line": 81,
+      "end_line": 90,
+      "raw": "For image/spatial-only builds, pass `-DIIVISUALCODEC_VIDEO=OFF\n-DIIVISUALCODEC_USD=OFF -DIIVISUALCODEC_OPENCV=OFF -DIIVISUALCODEC_3D=OFF\n-DIIVISUALCODEC_CAD=OFF`. Native Windows FFmpeg builds require an MSYS2 toolchain;\nthe C++ SDK also accepts externally built backends through CMake/pkg-config.\n`install-native.sh` uses the existing backend prefix and installs under\n`~/.local/SDK/iiVisualCodec` by default; `IISDK_NATIVE_PREFIX` changes that\ndestination. Set `IIVISUALCODEC_BOOTSTRAP=1` to explicitly rebuild the backends.\nThe backend prefix must accompany the installed SDK in the consuming kit.\nThe build layout and isolated test workspaces are described in\n[BuildLayout.md](docs/BuildLayout.md).\n"
     },
     {
       "id": "b000022",
-      "kind": "blank",
-      "start_line": 87,
-      "end_line": 87,
-      "raw": "\n"
-    },
-    {
-      "id": "b000023",
-      "kind": "paragraph",
-      "start_line": 88,
-      "end_line": 90,
-      "raw": "The legacy `iiImageCodec` CMake package, target, include path and `ii::image`\nnamespace remain forwarding compatibility surfaces. New code uses\n`iiVisualCodec`, `<iiVisualCodec/...>` and `ii::visual::image`.\n"
-    },
-    {
-      "id": "b000024",
       "kind": "blank",
       "start_line": 91,
       "end_line": 91,
       "raw": "\n"
     },
     {
-      "id": "b000025",
+      "id": "b000023",
       "kind": "paragraph",
       "start_line": 92,
-      "end_line": 99,
+      "end_line": 94,
+      "raw": "The legacy `iiImageCodec` CMake package, target, include path and `ii::image`\nnamespace remain forwarding compatibility surfaces. New code uses\n`iiVisualCodec`, `<iiVisualCodec/...>` and `ii::visual::image`.\n"
+    },
+    {
+      "id": "b000024",
+      "kind": "blank",
+      "start_line": 95,
+      "end_line": 95,
+      "raw": "\n"
+    },
+    {
+      "id": "b000025",
+      "kind": "paragraph",
+      "start_line": 96,
+      "end_line": 103,
       "raw": "See [contracts](docs/Contracts.md), [video](docs/Video.md),\n[VR/AR processing](docs/Spatial.md), [OpenUSD](docs/USD.md),\n[Vision AI](docs/VisionAI.md), [OpenCV](docs/OpenCV.md),\n[geometry](docs/Geometry.md), [3D assets](docs/Asset3D.md), [CAD](docs/CAD.md),\n[dependency and package delivery](docs/Packaging.md),\n[0.4 verification](docs/GeometryVerification.md),\n[0.3 verification](docs/VisionVerification.md) and [0.2 verification](docs/Verification.md).\nRunnable usage is in `example/`.\n"
     },
     {
       "id": "b000026",
       "kind": "blank",
-      "start_line": 100,
-      "end_line": 100,
+      "start_line": 104,
+      "end_line": 104,
       "raw": "\n"
     },
     {
       "id": "b000027",
       "kind": "paragraph",
-      "start_line": 101,
-      "end_line": 109,
+      "start_line": 105,
+      "end_line": 113,
       "raw": "`COMPONENTS Geometry` imports no Assimp, OCCT, OpenCV, FFmpeg or USD backend.\n`COMPONENTS Asset3D CAD` adds the independent native geometry backends. Asset\ndecoding uses a bounded virtual file bundle including sidecars; output bundles\nmust be published in full by the caller. CAD coordinates are millimetres;\n3D export normalizes units/up-axis to metres/+Y. `usd::from_geometry` creates a\nnew baked USD stage. Animation/skins, CAD product metadata and design history\nare outside the static interchange contract. See `example/geometry.cpp`.\nOCCT source and license/exception notices accompany staged shared libraries;\nfinal product distributions must maintain LGPL replacement and source conditions.\n"
     },
     {
       "id": "b000028",
       "kind": "blank",
-      "start_line": 110,
-      "end_line": 110,
+      "start_line": 114,
+      "end_line": 114,
       "raw": "\n"
     },
     {
       "id": "b000029",
       "kind": "paragraph",
-      "start_line": 111,
-      "end_line": 114,
+      "start_line": 115,
+      "end_line": 118,
       "raw": "Portable Vision-only clients request `COMPONENTS Vision`. `InferenceModel`,\n`Preprocessor`, and `Detector` are independent interfaces for supported native\nmodel implementations. OpenCV provides owned image interop, preprocessing, ORB,\nand optical flow. Its former ONNX/DNN model loader has been removed.\n"
     },
     {
       "id": "b000030",
       "kind": "blank",
-      "start_line": 115,
-      "end_line": 115,
+      "start_line": 119,
+      "end_line": 119,
       "raw": "\n"
     },
     {
       "id": "b000031",
       "kind": "paragraph",
-      "start_line": 116,
-      "end_line": 117,
+      "start_line": 120,
+      "end_line": 121,
       "raw": "`example/vision.cpp` performs an image-to-grayscale pipeline. No model file is\nloaded by this example. See [the runtime retirement contract](docs/RuntimeRetirement.md).\n"
     },
     {
       "id": "b000032",
       "kind": "blank",
-      "start_line": 118,
-      "end_line": 118,
+      "start_line": 122,
+      "end_line": 122,
       "raw": "\n"
     },
     {
       "id": "b000033",
       "kind": "heading",
-      "start_line": 119,
-      "end_line": 119,
+      "start_line": 123,
+      "end_line": 123,
       "raw": "## Documentation entry points\n",
       "level": 2,
       "title": "Documentation entry points"
@@ -315,15 +315,15 @@
     {
       "id": "b000034",
       "kind": "blank",
-      "start_line": 120,
-      "end_line": 120,
+      "start_line": 124,
+      "end_line": 124,
       "raw": "\n"
     },
     {
       "id": "b000035",
       "kind": "list",
-      "start_line": 121,
-      "end_line": 124,
+      "start_line": 125,
+      "end_line": 128,
       "raw": "- Human overview: this English `README.md`.\n- Agent instructions: [AGENT.md](AGENT.md).\n- Human documentation: [documentation index](docs/README.md).\n- Structured agent documentation: [agent index](docs/agent-index.json).\n",
       "items": [
         {
@@ -351,29 +351,29 @@
     {
       "id": "b000036",
       "kind": "html",
-      "start_line": 125,
-      "end_line": 125,
+      "start_line": 129,
+      "end_line": 129,
       "raw": "<!-- workspace-docs:readme:end -->\n"
     },
     {
       "id": "b000037",
       "kind": "blank",
-      "start_line": 126,
-      "end_line": 126,
+      "start_line": 130,
+      "end_line": 130,
       "raw": "\n"
     },
     {
       "id": "b000038",
       "kind": "html",
-      "start_line": 127,
-      "end_line": 127,
+      "start_line": 131,
+      "end_line": 131,
       "raw": "<!-- workspace-docs:readme:start -->\n"
     },
     {
       "id": "b000039",
       "kind": "heading",
-      "start_line": 128,
-      "end_line": 128,
+      "start_line": 132,
+      "end_line": 132,
       "raw": "## Documentation entry points\n",
       "level": 2,
       "title": "Documentation entry points"
@@ -381,15 +381,15 @@
     {
       "id": "b000040",
       "kind": "blank",
-      "start_line": 129,
-      "end_line": 129,
+      "start_line": 133,
+      "end_line": 133,
       "raw": "\n"
     },
     {
       "id": "b000041",
       "kind": "list",
-      "start_line": 130,
-      "end_line": 133,
+      "start_line": 134,
+      "end_line": 137,
       "raw": "- Human overview: this English `README.md`.\n- Agent instructions: [AGENT.md](AGENT.md).\n- Human documentation: [documentation index](docs/README.md).\n- Structured agent documentation: [agent index](docs/agent-index.json).\n",
       "items": [
         {
@@ -417,8 +417,8 @@
     {
       "id": "b000042",
       "kind": "html",
-      "start_line": 134,
-      "end_line": 134,
+      "start_line": 138,
+      "end_line": 138,
       "raw": "<!-- workspace-docs:readme:end -->\n"
     }
   ],
@@ -437,7 +437,7 @@
       "level": 2,
       "title": "Documentation entry points",
       "anchor": "documentation-entry-points",
-      "start_line": 119
+      "start_line": 123
     },
     {
       "block_id": "b000039",
@@ -445,7 +445,7 @@
       "level": 2,
       "title": "Documentation entry points",
       "anchor": "documentation-entry-points-1",
-      "start_line": 128
+      "start_line": 132
     }
   ],
   "indexes": {
@@ -459,28 +459,28 @@
       },
       {
         "block_id": "b000017",
-        "line": 64,
+        "line": 65,
         "text": "archives and license notices must accompany any redistribution of FFmpeg; the",
         "basis": "lexical_match",
         "context": "paragraph"
       },
       {
         "block_id": "b000021",
-        "line": 86,
+        "line": 88,
         "text": "The backend prefix must accompany the installed SDK in the consuming kit.",
         "basis": "lexical_match",
         "context": "paragraph"
       },
       {
         "block_id": "b000027",
-        "line": 104,
+        "line": 108,
         "text": "must be published in full by the caller. CAD coordinates are millimetres;",
         "basis": "lexical_match",
         "context": "paragraph"
       },
       {
         "block_id": "b000027",
-        "line": 109,
+        "line": 113,
         "text": "final product distributions must maintain LGPL replacement and source conditions.",
         "basis": "lexical_match",
         "context": "paragraph"
@@ -490,7 +490,7 @@
       {
         "block_id": "b000019",
         "language": "sh",
-        "code": "python3 tools/bootstrap_dependencies.py --jobs 4\nexport PKG_CONFIG_PATH=\"$PWD/build/dependencies/prefix/lib/pkgconfig\"\ncmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \\\n  -DCMAKE_PREFIX_PATH=\"$PWD/build/dependencies/prefix\" \\\n  -DCMAKE_FIND_FRAMEWORK=LAST -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON\ncmake --build build --parallel 4\nctest --test-dir build --output-on-failure\ncmake --install build --prefix \"$PWD/build/install\"\n"
+        "code": "python3 tools/bootstrap_dependencies.py --jobs 4\nexport PKG_CONFIG_PATH=\"$PWD/resources/dependencies/prefix/lib/pkgconfig\"\ncmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \\\n  -DCMAKE_PREFIX_PATH=\"$PWD/resources/dependencies/prefix\" \\\n  -DCMAKE_FIND_FRAMEWORK=LAST -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON\ncmake --build build --parallel 4\nctest --test-dir build --output-on-failure\ncmake --install build --prefix \"$HOME/.local/SDK/iiVisualCodec\"\n"
       }
     ],
     "links": [
@@ -502,144 +502,151 @@
         "line": 3
       },
       {
+        "block_id": "b000021",
+        "label": "BuildLayout.md",
+        "target": "docs/BuildLayout.md",
+        "kind": "relative",
+        "line": 90
+      },
+      {
         "block_id": "b000025",
         "label": "contracts",
         "target": "docs/Contracts.md",
         "kind": "relative",
-        "line": 92
+        "line": 96
       },
       {
         "block_id": "b000025",
         "label": "video",
         "target": "docs/Video.md",
         "kind": "relative",
-        "line": 92
+        "line": 96
       },
       {
         "block_id": "b000025",
         "label": "VR/AR processing",
         "target": "docs/Spatial.md",
         "kind": "relative",
-        "line": 93
+        "line": 97
       },
       {
         "block_id": "b000025",
         "label": "OpenUSD",
         "target": "docs/USD.md",
         "kind": "relative",
-        "line": 93
+        "line": 97
       },
       {
         "block_id": "b000025",
         "label": "Vision AI",
         "target": "docs/VisionAI.md",
         "kind": "relative",
-        "line": 94
+        "line": 98
       },
       {
         "block_id": "b000025",
         "label": "OpenCV",
         "target": "docs/OpenCV.md",
         "kind": "relative",
-        "line": 94
+        "line": 98
       },
       {
         "block_id": "b000025",
         "label": "geometry",
         "target": "docs/Geometry.md",
         "kind": "relative",
-        "line": 95
+        "line": 99
       },
       {
         "block_id": "b000025",
         "label": "3D assets",
         "target": "docs/Asset3D.md",
         "kind": "relative",
-        "line": 95
+        "line": 99
       },
       {
         "block_id": "b000025",
         "label": "CAD",
         "target": "docs/CAD.md",
         "kind": "relative",
-        "line": 95
+        "line": 99
       },
       {
         "block_id": "b000025",
         "label": "dependency and package delivery",
         "target": "docs/Packaging.md",
         "kind": "relative",
-        "line": 96
+        "line": 100
       },
       {
         "block_id": "b000025",
         "label": "0.4 verification",
         "target": "docs/GeometryVerification.md",
         "kind": "relative",
-        "line": 97
+        "line": 101
       },
       {
         "block_id": "b000025",
         "label": "0.3 verification",
         "target": "docs/VisionVerification.md",
         "kind": "relative",
-        "line": 98
+        "line": 102
       },
       {
         "block_id": "b000025",
         "label": "0.2 verification",
         "target": "docs/Verification.md",
         "kind": "relative",
-        "line": 98
+        "line": 102
       },
       {
         "block_id": "b000031",
         "label": "the runtime retirement contract",
         "target": "docs/RuntimeRetirement.md",
         "kind": "relative",
-        "line": 117
+        "line": 121
       },
       {
         "block_id": "b000035",
         "label": "AGENT.md",
         "target": "AGENT.md",
         "kind": "relative",
-        "line": 122
+        "line": 126
       },
       {
         "block_id": "b000035",
         "label": "documentation index",
         "target": "docs/README.md",
         "kind": "relative",
-        "line": 123
+        "line": 127
       },
       {
         "block_id": "b000035",
         "label": "agent index",
         "target": "docs/agent-index.json",
         "kind": "relative",
-        "line": 124
+        "line": 128
       },
       {
         "block_id": "b000041",
         "label": "AGENT.md",
         "target": "AGENT.md",
         "kind": "relative",
-        "line": 131
+        "line": 135
       },
       {
         "block_id": "b000041",
         "label": "documentation index",
         "target": "docs/README.md",
         "kind": "relative",
-        "line": 132
+        "line": 136
       },
       {
         "block_id": "b000041",
         "label": "agent index",
         "target": "docs/agent-index.json",
         "kind": "relative",
-        "line": 133
+        "line": 137
       }
     ],
     "tables": [

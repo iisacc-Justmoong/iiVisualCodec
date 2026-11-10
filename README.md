@@ -60,7 +60,8 @@ The default dependency bootstrap pins a GPL/nonfree-disabled **shared LGPL
 FFmpeg 8.0.1**, **OpenH264 2.6.0**, **OpenUSD 26.11.1**, **oneTBB 2021.12.0** and
 Apache-2.0 **OpenCV 4.14.0**, BSD **Assimp 6.0.5** and shared LGPL-2.1-with-exception
 **Open CASCADE 8.0.1**. It verifies source
-SHA-256 values and records build commands under `build/dependencies/`. Source
+SHA-256 values and keeps sources, backend libraries and provenance under
+`resources/dependencies/`. Bootstrap intermediates use `build/`. Source
 archives and license notices must accompany any redistribution of FFmpeg; the
 application's own code remains separate. The module rejects GPL/nonfree FFmpeg
 builds at runtime. Image dependencies are libpng >= 1.6, libjpeg, zlib,
@@ -68,22 +69,25 @@ WebP >= 1 and TIFF >= 4.5; Linux ICC conversion also needs Little CMS 2.
 
 ```sh
 python3 tools/bootstrap_dependencies.py --jobs 4
-export PKG_CONFIG_PATH="$PWD/build/dependencies/prefix/lib/pkgconfig"
+export PKG_CONFIG_PATH="$PWD/resources/dependencies/prefix/lib/pkgconfig"
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_PREFIX_PATH="$PWD/build/dependencies/prefix" \
+  -DCMAKE_PREFIX_PATH="$PWD/resources/dependencies/prefix" \
   -DCMAKE_FIND_FRAMEWORK=LAST -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON
 cmake --build build --parallel 4
 ctest --test-dir build --output-on-failure
-cmake --install build --prefix "$PWD/build/install"
+cmake --install build --prefix "$HOME/.local/SDK/iiVisualCodec"
 ```
 
 For image/spatial-only builds, pass `-DIIVISUALCODEC_VIDEO=OFF
 -DIIVISUALCODEC_USD=OFF -DIIVISUALCODEC_OPENCV=OFF -DIIVISUALCODEC_3D=OFF
 -DIIVISUALCODEC_CAD=OFF`. Native Windows FFmpeg builds require an MSYS2 toolchain;
 the C++ SDK also accepts externally built backends through CMake/pkg-config.
-`install-native.sh` bootstraps the backends and installs into the shared native
-kit under `SDK/build/` by default; `IISDK_NATIVE_PREFIX` changes that destination.
+`install-native.sh` uses the existing backend prefix and installs under
+`~/.local/SDK/iiVisualCodec` by default; `IISDK_NATIVE_PREFIX` changes that
+destination. Set `IIVISUALCODEC_BOOTSTRAP=1` to explicitly rebuild the backends.
 The backend prefix must accompany the installed SDK in the consuming kit.
+The build layout and isolated test workspaces are described in
+[BuildLayout.md](docs/BuildLayout.md).
 
 The legacy `iiImageCodec` CMake package, target, include path and `ii::image`
 namespace remain forwarding compatibility surfaces. New code uses

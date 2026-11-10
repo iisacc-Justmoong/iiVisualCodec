@@ -25,7 +25,7 @@ Vision의 YoloDetector에 DnnModel과 OpenCV Preprocessor를 전달하면 이미
 
 ## 재현 가능한 의존성·예제
 
-`tools/dependencies.json`은 OpenCV 4.14.0 공식 archive와 SHA-256을 고정한다. `python3 -B tools/bootstrap_dependencies.py --only opencv --jobs 4`로 build/dependencies/에 구성·빌드·설치한다. Qt·highgui·videoio·외부 FFmpeg·CUDA·OpenCL·nonfree를 사용하지 않고, ONNX reader용 protobuf는 archive 안의 소스로 빌드한다. 기존 이미지·비디오 코덱의 책임을 OpenCV로 옮기지 않는다. 설치 prefix의 OpenCV·protobuf 등 재배포 고지도 키트에 함께 복사한다.
+`tools/dependencies.json`은 OpenCV 4.14.0 공식 archive와 SHA-256을 고정한다. `python3 -B tools/bootstrap_dependencies.py --only opencv --jobs 4`로 구성·빌드하고 결과를 resources/dependencies/에 둔다. Qt·highgui·videoio·외부 FFmpeg·CUDA·OpenCL·nonfree를 사용하지 않고, ONNX reader용 protobuf는 archive 안의 소스로 빌드한다. 기존 이미지·비디오 코덱의 책임을 OpenCV로 옮기지 않는다. 설치 prefix의 OpenCV·protobuf 등 재배포 고지도 키트에 함께 복사한다.
 
 전체 SDK는 `IIVISUALCODEC_OPENCV=ON`이며 core만 빌드할 때 `-DIIVISUALCODEC_OPENCV=OFF`를 지정한다. 설치 소비자는 다음과 같이 선택한다.
 
