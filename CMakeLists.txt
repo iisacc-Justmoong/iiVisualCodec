@@ -21,6 +21,10 @@ option(IIVISUALCODEC_CAD "Build Open CASCADE exact CAD exchange/modeling" ON)
 option(IIVISUALCODEC_SANITIZE "Instrument iiVisualCodec contracts with ASan/UBSan" OFF)
 find_package(PNG 1.6 REQUIRED)
 find_package(JPEG REQUIRED)
+set(IIVISUALCODEC_JPEG_ABI "${JPEG_VERSION}")
+if(NOT BUILD_SHARED_LIBS AND NOT IIVISUALCODEC_JPEG_ABI)
+    message(FATAL_ERROR "The JPEG ABI version is required for a static iiVisualCodec package")
+endif()
 find_package(ZLIB REQUIRED)
 find_package(WebP 1 CONFIG REQUIRED)
 find_package(TIFF 4.5 REQUIRED)
@@ -158,6 +162,11 @@ if(BUILD_TESTING)
             "${IIVISUALCODEC_TEST_PROVIDER_PYTHON_DIR}"
             "${CMAKE_CURRENT_SOURCE_DIR}/resources" ${ARGN})
     endfunction()
+    if(NOT BUILD_SHARED_LIBS)
+        visual_resource_test(iiVisualCodec.jpeg_package_abi "${Python3_EXECUTABLE}" -B
+            "${CMAKE_CURRENT_SOURCE_DIR}/tests/jpeg_package_abi.py" "${CMAKE_COMMAND}"
+            "${CMAKE_CURRENT_BINARY_DIR}/iiVisualCodecConfig.cmake" "${IIVISUALCODEC_JPEG_ABI}" "@WORK@")
+    endif()
     add_test(NAME iiVisualCodec.resource_runner COMMAND "${CMAKE_COMMAND}" -E env
         "PYTHONPATH=${IIVISUALCODEC_TEST_PROVIDER_PYTHON_DIR}" "${Python3_EXECUTABLE}" -B
         "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_resource_runner.py")

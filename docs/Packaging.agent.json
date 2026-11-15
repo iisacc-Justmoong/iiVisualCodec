@@ -10,9 +10,9 @@
   },
   "source": {
     "path": "docs/Packaging.md",
-    "sha256": "b8f5b386f24955cf4766cdf9f9d2bc462e8027c83b064e64f71f2feae421f3b0",
-    "bytes": 7935,
-    "line_count": 55,
+    "sha256": "9691abd94385a28f7adeb0f0bb61d2f513e5e0c1955658c69edfe2780a8bd5d7",
+    "bytes": 8865,
+    "line_count": 57,
     "encoding": "utf-8",
     "language": "ko"
   },
@@ -199,12 +199,10 @@
     },
     {
       "id": "b000025",
-      "kind": "heading",
+      "kind": "paragraph",
       "start_line": 41,
       "end_line": 41,
-      "raw": "## 독립 패키지와 경로 이동 검사\n",
-      "level": 2,
-      "title": "독립 패키지와 경로 이동 검사"
+      "raw": "정적 Image 패키지는 빌드 당시 사용한 libjpeg ABI 버전을 CMake 패키지에 기록하고, 소비자에게 동일한 ABI의 JPEG 라이브러리를 요구한다. 예를 들어 ABI 62로 컴파일한 코덱에 ABI 80 라이브러리를 연결하면 링크가 성공해도 JPEG 읽기와 쓰기가 실패한다. 헤더와 라이브러리는 같은 네이티브 키트에서 선택하고, 다른 ABI의 설치본으로 교체할 때는 코덱도 다시 빌드해야 한다. TIFF 등 다른 네이티브 의존성이 로드하는 JPEG 라이브러리까지 함께 확인해야 하며, 패키지의 직접 의존성 검사만으로 모든 플랫폼의 심볼 충돌이 해결되는 것은 아니다. 공유 Image 패키지는 자체 연결을 사용한다. 이전에 설치된 패키지에는 이 검사 정보가 없을 수 있으므로 업데이트 전에는 소비자에서 JPEG 왕복 검사를 수행해야 한다.\n"
     },
     {
       "id": "b000026",
@@ -215,10 +213,12 @@
     },
     {
       "id": "b000027",
-      "kind": "paragraph",
+      "kind": "heading",
       "start_line": 43,
       "end_line": 43,
-      "raw": "`cmake --install`은 SDK 래퍼를 설치한다. `tools/stage_package.py`는 backend prefix 및 지정 image prefix에서 필요한 정적 이미지 코덱·헤더·export·라이선스와 SDK를 모아 `resources/staging/` 하위 배포 prefix를 만든다. 기존 출력 디렉터리와 이 루트 밖의 목적지를 거절한다. 기본 image prefix는 SDK/build/congregation-native/prefix이다. 현재 staging 도구의 정적 이미지 라이브러리 파일 목록은 해당 POSIX 네이티브 키트용이며 다른 툴체인의 파일명은 별도로 구성해야 한다.\n"
+      "raw": "## 독립 패키지와 경로 이동 검사\n",
+      "level": 2,
+      "title": "독립 패키지와 경로 이동 검사"
     },
     {
       "id": "b000028",
@@ -229,27 +229,27 @@
     },
     {
       "id": "b000029",
-      "kind": "fenced_code",
+      "kind": "paragraph",
       "start_line": 45,
-      "end_line": 47,
-      "raw": "```sh\npython3 -B tools/stage_package.py --destination resources/staging/package\n```\n",
-      "language": "sh",
-      "code": "python3 -B tools/stage_package.py --destination resources/staging/package\n",
-      "closed": true
+      "end_line": 45,
+      "raw": "`cmake --install`은 SDK 래퍼를 설치한다. `tools/stage_package.py`는 backend prefix 및 지정 image prefix에서 필요한 정적 이미지 코덱·헤더·export·라이선스와 SDK를 모아 `resources/staging/` 하위 배포 prefix를 만든다. 기존 출력 디렉터리와 이 루트 밖의 목적지를 거절한다. 기본 image prefix는 SDK/build/congregation-native/prefix이다. 현재 staging 도구의 정적 이미지 라이브러리 파일 목록은 해당 POSIX 네이티브 키트용이며 다른 툴체인의 파일명은 별도로 구성해야 한다.\n"
     },
     {
       "id": "b000030",
       "kind": "blank",
-      "start_line": 48,
-      "end_line": 48,
+      "start_line": 46,
+      "end_line": 46,
       "raw": "\n"
     },
     {
       "id": "b000031",
-      "kind": "paragraph",
-      "start_line": 49,
+      "kind": "fenced_code",
+      "start_line": 47,
       "end_line": 49,
-      "raw": "소비자 검사는 사용 중인 빌드가 없을 때 `build/`를 소비자 설정으로 교체하여 수행하고, 검사가 끝나면 모듈 빌드를 다시 구성한다. 이미지 전용 소비자는 `-DVISUAL_IMAGE_ONLY=ON`으로 구성한다. 테스트 파일은 `resources/.t/`의 임시 공간에서 생성하고 검사 후 정리한다. 과거 다중 빌드와 JUnit 파일을 전제로 하는 `tests/package_audit.py`는 과거 검증 기록용이며 현재 클린 빌드의 자동 검사는 아니다.\n"
+      "raw": "```sh\npython3 -B tools/stage_package.py --destination resources/staging/package\n```\n",
+      "language": "sh",
+      "code": "python3 -B tools/stage_package.py --destination resources/staging/package\n",
+      "closed": true
     },
     {
       "id": "b000032",
@@ -260,12 +260,10 @@
     },
     {
       "id": "b000033",
-      "kind": "heading",
+      "kind": "paragraph",
       "start_line": 51,
       "end_line": 51,
-      "raw": "## 라이선스와 소스 자료\n",
-      "level": 2,
-      "title": "라이선스와 소스 자료"
+      "raw": "소비자 검사는 사용 중인 빌드가 없을 때 `build/`를 소비자 설정으로 교체하여 수행하고, 검사가 끝나면 모듈 빌드를 다시 구성한다. 이미지 전용 소비자는 `-DVISUAL_IMAGE_ONLY=ON`으로 구성한다. 테스트 파일은 `resources/.t/`의 임시 공간에서 생성하고 검사 후 정리한다. 과거 다중 빌드와 JUnit 파일을 전제로 하는 `tests/package_audit.py`는 과거 검증 기록용이며 현재 클린 빌드의 자동 검사는 아니다.\n"
     },
     {
       "id": "b000034",
@@ -276,10 +274,12 @@
     },
     {
       "id": "b000035",
-      "kind": "paragraph",
+      "kind": "heading",
       "start_line": 53,
       "end_line": 53,
-      "raw": "SDK 자체는 MIT이다. OpenH264·OpenUSD·oneTBB의 재배포 라이선스·고지는 각각 원본의 LICENSE/NOTICE에서 가져온다. FFmpeg를 포함한 패키지는 GPL/nonfree를 비활성화한 공유 라이브러리, 실제 configure 명령, 고정된 원본 소스 archive, LGPL 고지를 포함한다. FFmpeg 공식 지침은 [공식 라이선스 안내](https://ffmpeg.org/legal.html)를 따른다. 최종 제품에서의 라이브러리 교체·재링크 조건, 고지와 소스 제공은 제품 배포자가 유지해야 한다. 외부 FFmpeg 도구를 사용한 테스트와 SDK가 링크하는 LGPL FFmpeg는 구분한다.\n"
+      "raw": "## 라이선스와 소스 자료\n",
+      "level": 2,
+      "title": "라이선스와 소스 자료"
     },
     {
       "id": "b000036",
@@ -293,6 +293,20 @@
       "kind": "paragraph",
       "start_line": 55,
       "end_line": 55,
+      "raw": "SDK 자체는 MIT이다. OpenH264·OpenUSD·oneTBB의 재배포 라이선스·고지는 각각 원본의 LICENSE/NOTICE에서 가져온다. FFmpeg를 포함한 패키지는 GPL/nonfree를 비활성화한 공유 라이브러리, 실제 configure 명령, 고정된 원본 소스 archive, LGPL 고지를 포함한다. FFmpeg 공식 지침은 [공식 라이선스 안내](https://ffmpeg.org/legal.html)를 따른다. 최종 제품에서의 라이브러리 교체·재링크 조건, 고지와 소스 제공은 제품 배포자가 유지해야 한다. 외부 FFmpeg 도구를 사용한 테스트와 SDK가 링크하는 LGPL FFmpeg는 구분한다.\n"
+    },
+    {
+      "id": "b000038",
+      "kind": "blank",
+      "start_line": 56,
+      "end_line": 56,
+      "raw": "\n"
+    },
+    {
+      "id": "b000039",
+      "kind": "paragraph",
+      "start_line": 57,
+      "end_line": 57,
       "raw": "OpenUSD의 빌드 선택과 필수 의존성은 [공식 빌드 문서](https://github.com/PixarAnimationStudios/OpenUSD/blob/v26.11.1/BUILDING.md)에 근거한다. 사용자 설치본 ~/.local과 실행 중인 제품 앱은 staging 단계에서 수정하지 않는다.\n"
     }
   ],
@@ -314,20 +328,20 @@
       "start_line": 22
     },
     {
-      "block_id": "b000025",
+      "block_id": "b000027",
       "parent_id": "b000001",
       "level": 2,
       "title": "독립 패키지와 경로 이동 검사",
       "anchor": "독립-패키지와-경로-이동-검사",
-      "start_line": 41
+      "start_line": 43
     },
     {
-      "block_id": "b000033",
+      "block_id": "b000035",
       "parent_id": "b000001",
       "level": 2,
       "title": "라이선스와 소스 자료",
       "anchor": "라이선스와-소스-자료",
-      "start_line": 51
+      "start_line": 53
     }
   ],
   "indexes": {
@@ -368,22 +382,29 @@
         "context": "paragraph"
       },
       {
-        "block_id": "b000027",
-        "line": 43,
-        "text": "`cmake --install`은 SDK 래퍼를 설치한다. `tools/stage_package.py`는 backend prefix 및 지정 image prefix에서 필요한 정적 이미지 코덱·헤더·export·라이선스와 SDK를 모아 `resources/staging/` 하위 배포 prefix를 만든다. 기존 출력 디렉터리와 이 루트 밖의 목적지를 거절한다. 기본 image prefix는 SDK/build/congregation-native/prefix이다. 현재 staging 도구의 정적 이미지 라이브러리 파일 목록은 해당 POSIX 네이티브 키트용이며 다른 툴체인의 파일명은 별도로 구성해야 한다.",
+        "block_id": "b000025",
+        "line": 41,
+        "text": "정적 Image 패키지는 빌드 당시 사용한 libjpeg ABI 버전을 CMake 패키지에 기록하고, 소비자에게 동일한 ABI의 JPEG 라이브러리를 요구한다. 예를 들어 ABI 62로 컴파일한 코덱에 ABI 80 라이브러리를 연결하면 링크가 성공해도 JPEG 읽기와 쓰기가 실패한다. 헤더와 라이브러리는 같은 네이티브 키트에서 선택하고, 다른 ABI의 설치본으로 교체할 때는 코덱도 다시 빌드해야 한다. TIFF 등 다른 네이티브 의존성이 로드하는 JPEG 라이브러리까지 함께 확인해야 하며, 패키지의 직접 의존성 검사만으로 모든 플랫폼의 심볼 충돌이 해결되는 것은 아니다. 공유 Image 패키지는 자체 연결을 사용한다. 이전에 설치된 패키지에는 이 검사 정보가 없을 수 있으므로 업데이트 전에는 소비자에서 JPEG 왕복 검사를 수행해야 한다.",
         "basis": "lexical_match",
         "context": "paragraph"
       },
       {
-        "block_id": "b000035",
-        "line": 53,
-        "text": "SDK 자체는 MIT이다. OpenH264·OpenUSD·oneTBB의 재배포 라이선스·고지는 각각 원본의 LICENSE/NOTICE에서 가져온다. FFmpeg를 포함한 패키지는 GPL/nonfree를 비활성화한 공유 라이브러리, 실제 configure 명령, 고정된 원본 소스 archive, LGPL 고지를 포함한다. FFmpeg 공식 지침은 [공식 라이선스 안내](https://ffmpeg.org/legal.html)를 따른다. 최종 제품에서의 라이브러리 교체·재링크 조건, 고지와 소스 제공은 제품 배포자가 유지해야 한다. 외부 FFmpeg 도구를 사용한 테스트와 SDK가 링크하는 LGPL FFmpeg는 구분한다.",
+        "block_id": "b000029",
+        "line": 45,
+        "text": "`cmake --install`은 SDK 래퍼를 설치한다. `tools/stage_package.py`는 backend prefix 및 지정 image prefix에서 필요한 정적 이미지 코덱·헤더·export·라이선스와 SDK를 모아 `resources/staging/` 하위 배포 prefix를 만든다. 기존 출력 디렉터리와 이 루트 밖의 목적지를 거절한다. 기본 image prefix는 SDK/build/congregation-native/prefix이다. 현재 staging 도구의 정적 이미지 라이브러리 파일 목록은 해당 POSIX 네이티브 키트용이며 다른 툴체인의 파일명은 별도로 구성해야 한다.",
         "basis": "lexical_match",
         "context": "paragraph"
       },
       {
         "block_id": "b000037",
         "line": 55,
+        "text": "SDK 자체는 MIT이다. OpenH264·OpenUSD·oneTBB의 재배포 라이선스·고지는 각각 원본의 LICENSE/NOTICE에서 가져온다. FFmpeg를 포함한 패키지는 GPL/nonfree를 비활성화한 공유 라이브러리, 실제 configure 명령, 고정된 원본 소스 archive, LGPL 고지를 포함한다. FFmpeg 공식 지침은 [공식 라이선스 안내](https://ffmpeg.org/legal.html)를 따른다. 최종 제품에서의 라이브러리 교체·재링크 조건, 고지와 소스 제공은 제품 배포자가 유지해야 한다. 외부 FFmpeg 도구를 사용한 테스트와 SDK가 링크하는 LGPL FFmpeg는 구분한다.",
+        "basis": "lexical_match",
+        "context": "paragraph"
+      },
+      {
+        "block_id": "b000039",
+        "line": 57,
         "text": "OpenUSD의 빌드 선택과 필수 의존성은 [공식 빌드 문서](https://github.com/PixarAnimationStudios/OpenUSD/blob/v26.11.1/BUILDING.md)에 근거한다. 사용자 설치본 ~/.local과 실행 중인 제품 앱은 staging 단계에서 수정하지 않는다.",
         "basis": "lexical_match",
         "context": "paragraph"
@@ -396,25 +417,25 @@
         "code": "python3 -B tools/bootstrap_dependencies.py --jobs 4\nexport PKG_CONFIG_PATH=\"$PWD/resources/dependencies/prefix/lib/pkgconfig\"\ncmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \\\n  -DCMAKE_PREFIX_PATH=\"$PWD/resources/dependencies/prefix;$PWD/../build/congregation-native/prefix\" \\\n  -DCMAKE_FIND_FRAMEWORK=LAST -DCMAKE_DISABLE_FIND_PACKAGE_Qt5=ON \\\n  -DCMAKE_DISABLE_FIND_PACKAGE_Qt6=ON\ncmake --build build --parallel 4\nctest --test-dir build --output-on-failure\n"
       },
       {
-        "block_id": "b000029",
+        "block_id": "b000031",
         "language": "sh",
         "code": "python3 -B tools/stage_package.py --destination resources/staging/package\n"
       }
     ],
     "links": [
       {
-        "block_id": "b000035",
+        "block_id": "b000037",
         "label": "공식 라이선스 안내",
         "target": "https://ffmpeg.org/legal.html",
         "kind": "external",
-        "line": 53
+        "line": 55
       },
       {
-        "block_id": "b000037",
+        "block_id": "b000039",
         "label": "공식 빌드 문서",
         "target": "https://github.com/PixarAnimationStudios/OpenUSD/blob/v26.11.1/BUILDING.md",
         "kind": "external",
-        "line": 55
+        "line": 57
       }
     ],
     "tables": []

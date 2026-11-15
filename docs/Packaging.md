@@ -38,6 +38,8 @@ ctest --test-dir build --output-on-failure
 
 image 네이티브 키트는 iiSDKBuilder/tools/build_native_kit.py가 만든 PNG·JPEG·WebP·TIFF 정적 라이브러리·헤더·CMake export와 라이선스를 제공한다. 시스템 패키지를 이용해 소스 빌드할 수도 있지만 배포 시 실제 연결된 라이브러리와 그 라이선스·동적 의존성을 확인해야 한다. Video는 FFmpeg 8 이상에 해당하는 libavformat/libavcodec 62, libavutil 60, libswscale 9 이상의 패키지 API를 사용한다. 네이티브 Windows FFmpeg bootstrap은 MSYS2 도구 환경에서 따로 구성하고 CMake/pkg-config로 연결해야 한다. macOS의 실행 성공은 다른 플랫폼 실행 증거가 아니다.
 
+정적 Image 패키지는 빌드 당시 사용한 libjpeg ABI 버전을 CMake 패키지에 기록하고, 소비자에게 동일한 ABI의 JPEG 라이브러리를 요구한다. 예를 들어 ABI 62로 컴파일한 코덱에 ABI 80 라이브러리를 연결하면 링크가 성공해도 JPEG 읽기와 쓰기가 실패한다. 헤더와 라이브러리는 같은 네이티브 키트에서 선택하고, 다른 ABI의 설치본으로 교체할 때는 코덱도 다시 빌드해야 한다. TIFF 등 다른 네이티브 의존성이 로드하는 JPEG 라이브러리까지 함께 확인해야 하며, 패키지의 직접 의존성 검사만으로 모든 플랫폼의 심볼 충돌이 해결되는 것은 아니다. 공유 Image 패키지는 자체 연결을 사용한다. 이전에 설치된 패키지에는 이 검사 정보가 없을 수 있으므로 업데이트 전에는 소비자에서 JPEG 왕복 검사를 수행해야 한다.
+
 ## 독립 패키지와 경로 이동 검사
 
 `cmake --install`은 SDK 래퍼를 설치한다. `tools/stage_package.py`는 backend prefix 및 지정 image prefix에서 필요한 정적 이미지 코덱·헤더·export·라이선스와 SDK를 모아 `resources/staging/` 하위 배포 prefix를 만든다. 기존 출력 디렉터리와 이 루트 밖의 목적지를 거절한다. 기본 image prefix는 SDK/build/congregation-native/prefix이다. 현재 staging 도구의 정적 이미지 라이브러리 파일 목록은 해당 POSIX 네이티브 키트용이며 다른 툴체인의 파일명은 별도로 구성해야 한다.

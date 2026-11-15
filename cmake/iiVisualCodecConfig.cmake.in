@@ -28,7 +28,14 @@ if("Image" IN_LIST _iivisual_requested)
         pkg_check_modules(ColorManagement REQUIRED IMPORTED_TARGET lcms2)
     endif()
     find_dependency(PNG 1.6)
-    find_dependency(JPEG)
+    # Static image archives contain structures compiled against a particular
+    # libjpeg ABI. A consumer's differently configured libjpeg can otherwise
+    # link successfully and reject every JPEG at runtime.
+    if(NOT "@BUILD_SHARED_LIBS@")
+        find_dependency(JPEG @IIVISUALCODEC_JPEG_ABI@ EXACT)
+    else()
+        find_dependency(JPEG)
+    endif()
     find_dependency(ZLIB)
     find_dependency(WebP 1 CONFIG)
     find_dependency(TIFF 4.5)
