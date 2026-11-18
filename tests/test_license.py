@@ -4,10 +4,14 @@
 import hashlib
 import json
 import os
+import tempfile
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+FIRST_PARTY_DIRECTORIES = ("src", "tests", "cmake", "example", "tools", "docs")
+EXCLUDED_PARTS = {"third_party", "build", "resources"}
+SOURCE_SUFFIXES = {".h", ".hpp", ".c", ".cpp", ".md", ".cmake", ".in", ".py", ".txt"}
 
 MIRRORS = (
     ("README.md", "docs/entrypoints/README.agent.json"),
@@ -107,14 +111,45 @@ class LicenseTextTest(unittest.TestCase):
         self.assertIn("Copyright (c) 2017 Sean Barrett", header)
 
     def test_no_first_party_mit_spdx_header(self):
-        suffixes = {".h", ".hpp", ".c", ".cpp", ".md", ".cmake", ".in", ".py", ".txt"}
-        for path in ROOT.rglob("*"):
-            if not path.is_file() or "third_party" in path.parts:
-                continue
-            if path.suffix.lower() not in suffixes or path.name in {"LICENSE", "test_license.py"}:
-                continue
+        for path in first_party_source_files(ROOT):
             text = path.read_text(encoding="utf-8", errors="replace")
             self.assertNotIn("SPDX-License-Identifier: MIT", text, str(path))
+
+    def test_spdx_scan_skips_dependency_staging_and_build_trees(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for relative in (
+                "resources/dependencies/sources/vendor.h",
+                "resources/staging/include/vendor.h",
+                "build/generated.h",
+                "third_party/vendor/vendor.h",
+            ):
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("SPDX-License-Identifier: MIT\n", encoding="utf-8")
+            self.assertEqual(list(first_party_source_files(root)), [])
+            first_party = root / "src" / "codec.h"
+            first_party.parent.mkdir()
+            first_party.write_text("/* first party */\n", encoding="utf-8")
+            self.assertEqual(list(first_party_source_files(root)), [first_party])
+
+
+def first_party_source_files(root: Path):
+    """Yield tracked first-party sources, never dependency, staging, or build trees."""
+    candidates = []
+    for directory in FIRST_PARTY_DIRECTORIES:
+        base = root / directory
+        if base.is_dir():
+            candidates.extend(path for path in base.rglob("*") if path.is_file())
+    if root.is_dir():
+        candidates.extend(path for path in root.iterdir() if path.is_file())
+    for path in candidates:
+        relative = path.relative_to(root)
+        if any(part in EXCLUDED_PARTS for part in relative.parts):
+            continue
+        if path.suffix.lower() not in SOURCE_SUFFIXES or path.name in {"LICENSE", "test_license.py"}:
+            continue
+        yield path
 
 
 if __name__ == "__main__":
