@@ -10,8 +10,8 @@
   },
   "source": {
     "path": "docs/Packaging.md",
-    "sha256": "9691abd94385a28f7adeb0f0bb61d2f513e5e0c1955658c69edfe2780a8bd5d7",
-    "bytes": 8865,
+    "sha256": "ea58b670190a92efbb5c8fc915627598ca914cb52f2fbf780bd261a918beabc3",
+    "bytes": 8872,
     "line_count": 57,
     "encoding": "utf-8",
     "language": "ko"
@@ -293,7 +293,7 @@
       "kind": "paragraph",
       "start_line": 55,
       "end_line": 55,
-      "raw": "SDK 자체는 MIT이다. OpenH264·OpenUSD·oneTBB의 재배포 라이선스·고지는 각각 원본의 LICENSE/NOTICE에서 가져온다. FFmpeg를 포함한 패키지는 GPL/nonfree를 비활성화한 공유 라이브러리, 실제 configure 명령, 고정된 원본 소스 archive, LGPL 고지를 포함한다. FFmpeg 공식 지침은 [공식 라이선스 안내](https://ffmpeg.org/legal.html)를 따른다. 최종 제품에서의 라이브러리 교체·재링크 조건, 고지와 소스 제공은 제품 배포자가 유지해야 한다. 외부 FFmpeg 도구를 사용한 테스트와 SDK가 링크하는 LGPL FFmpeg는 구분한다.\n"
+      "raw": "SDK 자체는 Apache-2.0이다. OpenH264·OpenUSD·oneTBB의 재배포 라이선스·고지는 각각 원본의 LICENSE/NOTICE에서 가져온다. FFmpeg를 포함한 패키지는 GPL/nonfree를 비활성화한 공유 라이브러리, 실제 configure 명령, 고정된 원본 소스 archive, LGPL 고지를 포함한다. FFmpeg 공식 지침은 [공식 라이선스 안내](https://ffmpeg.org/legal.html)를 따른다. 최종 제품에서의 라이브러리 교체·재링크 조건, 고지와 소스 제공은 제품 배포자가 유지해야 한다. 외부 FFmpeg 도구를 사용한 테스트와 SDK가 링크하는 LGPL FFmpeg는 구분한다.\n"
     },
     {
       "id": "b000038",
@@ -398,7 +398,7 @@
       {
         "block_id": "b000037",
         "line": 55,
-        "text": "SDK 자체는 MIT이다. OpenH264·OpenUSD·oneTBB의 재배포 라이선스·고지는 각각 원본의 LICENSE/NOTICE에서 가져온다. FFmpeg를 포함한 패키지는 GPL/nonfree를 비활성화한 공유 라이브러리, 실제 configure 명령, 고정된 원본 소스 archive, LGPL 고지를 포함한다. FFmpeg 공식 지침은 [공식 라이선스 안내](https://ffmpeg.org/legal.html)를 따른다. 최종 제품에서의 라이브러리 교체·재링크 조건, 고지와 소스 제공은 제품 배포자가 유지해야 한다. 외부 FFmpeg 도구를 사용한 테스트와 SDK가 링크하는 LGPL FFmpeg는 구분한다.",
+        "text": "SDK 자체는 Apache-2.0이다. OpenH264·OpenUSD·oneTBB의 재배포 라이선스·고지는 각각 원본의 LICENSE/NOTICE에서 가져온다. FFmpeg를 포함한 패키지는 GPL/nonfree를 비활성화한 공유 라이브러리, 실제 configure 명령, 고정된 원본 소스 archive, LGPL 고지를 포함한다. FFmpeg 공식 지침은 [공식 라이선스 안내](https://ffmpeg.org/legal.html)를 따른다. 최종 제품에서의 라이브러리 교체·재링크 조건, 고지와 소스 제공은 제품 배포자가 유지해야 한다. 외부 FFmpeg 도구를 사용한 테스트와 SDK가 링크하는 LGPL FFmpeg는 구분한다.",
         "basis": "lexical_match",
         "context": "paragraph"
       },

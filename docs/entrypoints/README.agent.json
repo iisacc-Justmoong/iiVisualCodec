@@ -10,9 +10,9 @@
   },
   "source": {
     "path": "README.md",
-    "sha256": "6706a16c8acd01db2fea40df44137f14cb5ebffc9ad157f151a1f926561c74cb",
-    "bytes": 8411,
-    "line_count": 138,
+    "sha256": "cce7c83d2a974db297142ad2b8a29e9e482bb554b2ac884903640ed998d684da",
+    "bytes": 8966,
+    "line_count": 154,
     "encoding": "utf-8",
     "language": "en"
   },
@@ -308,9 +308,9 @@
       "kind": "heading",
       "start_line": 123,
       "end_line": 123,
-      "raw": "## Documentation entry points\n",
+      "raw": "## License\n",
       "level": 2,
-      "title": "Documentation entry points"
+      "title": "License"
     },
     {
       "id": "b000034",
@@ -321,75 +321,81 @@
     },
     {
       "id": "b000035",
-      "kind": "list",
+      "kind": "paragraph",
       "start_line": 125,
-      "end_line": 128,
-      "raw": "- Human overview: this English `README.md`.\n- Agent instructions: [AGENT.md](AGENT.md).\n- Human documentation: [documentation index](docs/README.md).\n- Structured agent documentation: [agent index](docs/agent-index.json).\n",
-      "items": [
-        {
-          "marker": "-",
-          "text": "Human overview: this English `README.md`.",
-          "checked": null
-        },
-        {
-          "marker": "-",
-          "text": "Agent instructions: [AGENT.md](AGENT.md).",
-          "checked": null
-        },
-        {
-          "marker": "-",
-          "text": "Human documentation: [documentation index](docs/README.md).",
-          "checked": null
-        },
-        {
-          "marker": "-",
-          "text": "Structured agent documentation: [agent index](docs/agent-index.json).",
-          "checked": null
-        }
-      ]
+      "end_line": 125,
+      "raw": "SPDX-License-Identifier: Apache-2.0\n"
     },
     {
       "id": "b000036",
-      "kind": "html",
-      "start_line": 129,
-      "end_line": 129,
-      "raw": "<!-- workspace-docs:readme:end -->\n"
-    },
-    {
-      "id": "b000037",
       "kind": "blank",
-      "start_line": 130,
-      "end_line": 130,
+      "start_line": 126,
+      "end_line": 126,
       "raw": "\n"
     },
     {
-      "id": "b000038",
-      "kind": "html",
-      "start_line": 131,
+      "id": "b000037",
+      "kind": "paragraph",
+      "start_line": 127,
       "end_line": 131,
-      "raw": "<!-- workspace-docs:readme:start -->\n"
+      "raw": "The SDK tree in this repository is licensed under the\n[Apache License, Version 2.0](LICENSE) (SPDX `Apache-2.0`).\nThe copyright notice is `Copyright (c) 2026 iisacc`. Attribution for this\ndistribution is in [NOTICE](NOTICE). The Korean statement of the same policy\nis [docs/License.md](docs/License.md).\n"
+    },
+    {
+      "id": "b000038",
+      "kind": "blank",
+      "start_line": 132,
+      "end_line": 132,
+      "raw": "\n"
     },
     {
       "id": "b000039",
+      "kind": "paragraph",
+      "start_line": 133,
+      "end_line": 134,
+      "raw": "iisacc products under Product are licensed under the GNU Affero General\nPublic License (AGPL).\n"
+    },
+    {
+      "id": "b000040",
+      "kind": "blank",
+      "start_line": 135,
+      "end_line": 135,
+      "raw": "\n"
+    },
+    {
+      "id": "b000041",
+      "kind": "paragraph",
+      "start_line": 136,
+      "end_line": 137,
+      "raw": "Third-party and vendored code, libraries, fonts, tools, and model weights\nkeep their original licenses.\n"
+    },
+    {
+      "id": "b000042",
+      "kind": "blank",
+      "start_line": 138,
+      "end_line": 138,
+      "raw": "\n"
+    },
+    {
+      "id": "b000043",
       "kind": "heading",
-      "start_line": 132,
-      "end_line": 132,
+      "start_line": 139,
+      "end_line": 139,
       "raw": "## Documentation entry points\n",
       "level": 2,
       "title": "Documentation entry points"
     },
     {
-      "id": "b000040",
+      "id": "b000044",
       "kind": "blank",
-      "start_line": 133,
-      "end_line": 133,
+      "start_line": 140,
+      "end_line": 140,
       "raw": "\n"
     },
     {
-      "id": "b000041",
+      "id": "b000045",
       "kind": "list",
-      "start_line": 134,
-      "end_line": 137,
+      "start_line": 141,
+      "end_line": 144,
       "raw": "- Human overview: this English `README.md`.\n- Agent instructions: [AGENT.md](AGENT.md).\n- Human documentation: [documentation index](docs/README.md).\n- Structured agent documentation: [agent index](docs/agent-index.json).\n",
       "items": [
         {
@@ -415,10 +421,76 @@
       ]
     },
     {
-      "id": "b000042",
+      "id": "b000046",
       "kind": "html",
-      "start_line": 138,
-      "end_line": 138,
+      "start_line": 145,
+      "end_line": 145,
+      "raw": "<!-- workspace-docs:readme:end -->\n"
+    },
+    {
+      "id": "b000047",
+      "kind": "blank",
+      "start_line": 146,
+      "end_line": 146,
+      "raw": "\n"
+    },
+    {
+      "id": "b000048",
+      "kind": "html",
+      "start_line": 147,
+      "end_line": 147,
+      "raw": "<!-- workspace-docs:readme:start -->\n"
+    },
+    {
+      "id": "b000049",
+      "kind": "heading",
+      "start_line": 148,
+      "end_line": 148,
+      "raw": "## Documentation entry points\n",
+      "level": 2,
+      "title": "Documentation entry points"
+    },
+    {
+      "id": "b000050",
+      "kind": "blank",
+      "start_line": 149,
+      "end_line": 149,
+      "raw": "\n"
+    },
+    {
+      "id": "b000051",
+      "kind": "list",
+      "start_line": 150,
+      "end_line": 153,
+      "raw": "- Human overview: this English `README.md`.\n- Agent instructions: [AGENT.md](AGENT.md).\n- Human documentation: [documentation index](docs/README.md).\n- Structured agent documentation: [agent index](docs/agent-index.json).\n",
+      "items": [
+        {
+          "marker": "-",
+          "text": "Human overview: this English `README.md`.",
+          "checked": null
+        },
+        {
+          "marker": "-",
+          "text": "Agent instructions: [AGENT.md](AGENT.md).",
+          "checked": null
+        },
+        {
+          "marker": "-",
+          "text": "Human documentation: [documentation index](docs/README.md).",
+          "checked": null
+        },
+        {
+          "marker": "-",
+          "text": "Structured agent documentation: [agent index](docs/agent-index.json).",
+          "checked": null
+        }
+      ]
+    },
+    {
+      "id": "b000052",
+      "kind": "html",
+      "start_line": 154,
+      "end_line": 154,
       "raw": "<!-- workspace-docs:readme:end -->\n"
     }
   ],
@@ -435,17 +507,25 @@
       "block_id": "b000033",
       "parent_id": "b000001",
       "level": 2,
-      "title": "Documentation entry points",
-      "anchor": "documentation-entry-points",
+      "title": "License",
+      "anchor": "license",
       "start_line": 123
     },
     {
-      "block_id": "b000039",
+      "block_id": "b000043",
+      "parent_id": "b000001",
+      "level": 2,
+      "title": "Documentation entry points",
+      "anchor": "documentation-entry-points",
+      "start_line": 139
+    },
+    {
+      "block_id": "b000049",
       "parent_id": "b000001",
       "level": 2,
       "title": "Documentation entry points",
       "anchor": "documentation-entry-points-1",
-      "start_line": 132
+      "start_line": 148
     }
   ],
   "indexes": {
@@ -607,46 +687,67 @@
         "line": 121
       },
       {
-        "block_id": "b000035",
-        "label": "AGENT.md",
-        "target": "AGENT.md",
-        "kind": "relative",
-        "line": 126
-      },
-      {
-        "block_id": "b000035",
-        "label": "documentation index",
-        "target": "docs/README.md",
-        "kind": "relative",
-        "line": 127
-      },
-      {
-        "block_id": "b000035",
-        "label": "agent index",
-        "target": "docs/agent-index.json",
+        "block_id": "b000037",
+        "label": "Apache License, Version 2.0",
+        "target": "LICENSE",
         "kind": "relative",
         "line": 128
       },
       {
-        "block_id": "b000041",
+        "block_id": "b000037",
+        "label": "NOTICE",
+        "target": "NOTICE",
+        "kind": "relative",
+        "line": 130
+      },
+      {
+        "block_id": "b000037",
+        "label": "docs/License.md",
+        "target": "docs/License.md",
+        "kind": "relative",
+        "line": 131
+      },
+      {
+        "block_id": "b000045",
         "label": "AGENT.md",
         "target": "AGENT.md",
         "kind": "relative",
-        "line": 135
+        "line": 142
       },
       {
-        "block_id": "b000041",
+        "block_id": "b000045",
         "label": "documentation index",
         "target": "docs/README.md",
         "kind": "relative",
-        "line": 136
+        "line": 143
       },
       {
-        "block_id": "b000041",
+        "block_id": "b000045",
         "label": "agent index",
         "target": "docs/agent-index.json",
         "kind": "relative",
-        "line": 137
+        "line": 144
+      },
+      {
+        "block_id": "b000051",
+        "label": "AGENT.md",
+        "target": "AGENT.md",
+        "kind": "relative",
+        "line": 151
+      },
+      {
+        "block_id": "b000051",
+        "label": "documentation index",
+        "target": "docs/README.md",
+        "kind": "relative",
+        "line": 152
+      },
+      {
+        "block_id": "b000051",
+        "label": "agent index",
+        "target": "docs/agent-index.json",
+        "kind": "relative",
+        "line": 153
       }
     ],
     "tables": [

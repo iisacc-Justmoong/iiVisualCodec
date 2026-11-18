@@ -52,6 +52,6 @@ python3 -B tools/stage_package.py --destination resources/staging/package
 
 ## 라이선스와 소스 자료
 
-SDK 자체는 MIT이다. OpenH264·OpenUSD·oneTBB의 재배포 라이선스·고지는 각각 원본의 LICENSE/NOTICE에서 가져온다. FFmpeg를 포함한 패키지는 GPL/nonfree를 비활성화한 공유 라이브러리, 실제 configure 명령, 고정된 원본 소스 archive, LGPL 고지를 포함한다. FFmpeg 공식 지침은 [공식 라이선스 안내](https://ffmpeg.org/legal.html)를 따른다. 최종 제품에서의 라이브러리 교체·재링크 조건, 고지와 소스 제공은 제품 배포자가 유지해야 한다. 외부 FFmpeg 도구를 사용한 테스트와 SDK가 링크하는 LGPL FFmpeg는 구분한다.
+SDK 자체는 Apache-2.0이다. OpenH264·OpenUSD·oneTBB의 재배포 라이선스·고지는 각각 원본의 LICENSE/NOTICE에서 가져온다. FFmpeg를 포함한 패키지는 GPL/nonfree를 비활성화한 공유 라이브러리, 실제 configure 명령, 고정된 원본 소스 archive, LGPL 고지를 포함한다. FFmpeg 공식 지침은 [공식 라이선스 안내](https://ffmpeg.org/legal.html)를 따른다. 최종 제품에서의 라이브러리 교체·재링크 조건, 고지와 소스 제공은 제품 배포자가 유지해야 한다. 외부 FFmpeg 도구를 사용한 테스트와 SDK가 링크하는 LGPL FFmpeg는 구분한다.
 
 OpenUSD의 빌드 선택과 필수 의존성은 [공식 빌드 문서](https://github.com/PixarAnimationStudios/OpenUSD/blob/v26.11.1/BUILDING.md)에 근거한다. 사용자 설치본 ~/.local과 실행 중인 제품 앱은 staging 단계에서 수정하지 않는다.

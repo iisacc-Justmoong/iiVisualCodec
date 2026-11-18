@@ -120,6 +120,22 @@ and optical flow. Its former ONNX/DNN model loader has been removed.
 `example/vision.cpp` performs an image-to-grayscale pipeline. No model file is
 loaded by this example. See [the runtime retirement contract](docs/RuntimeRetirement.md).
 
+## License
+
+SPDX-License-Identifier: Apache-2.0
+
+The SDK tree in this repository is licensed under the
+[Apache License, Version 2.0](LICENSE) (SPDX `Apache-2.0`).
+The copyright notice is `Copyright (c) 2026 iisacc`. Attribution for this
+distribution is in [NOTICE](NOTICE). The Korean statement of the same policy
+is [docs/License.md](docs/License.md).
+
+iisacc products under Product are licensed under the GNU Affero General
+Public License (AGPL).
+
+Third-party and vendored code, libraries, fonts, tools, and model weights
+keep their original licenses.
+
 ## Documentation entry points
 
 - Human overview: this English `README.md`.
