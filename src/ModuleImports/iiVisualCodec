@@ -1,0 +1,43 @@
+#pragma once
+
+// C++ public entry for iiVisualCodec; the linked components select the API.
+
+#if defined(IISDK_IMPORT_IIVISUALCODEC_ASSET3D)
+#include <iiVisualCodec/Asset3D.h>
+#endif
+
+#if defined(IISDK_IMPORT_IIVISUALCODEC_CAD)
+#include <iiVisualCodec/CadCodec.h>
+#endif
+
+#if defined(IISDK_IMPORT_IIVISUALCODEC_GEOMETRY)
+#include <iiVisualCodec/Geometry.h>
+#endif
+
+#if defined(IISDK_IMPORT_IIVISUALCODEC_IMAGE)
+#include <iiVisualCodec/VisualCodec.h>
+#include <iiVisualCodec/ImageCodec.h>
+#include <iiImageCodec/ImageCodec.h>
+#endif
+
+#if defined(IISDK_IMPORT_IIVISUALCODEC_OPENCV)
+#include <iiVisualCodec/OpenCV.h>
+#include <iiVisualCodec/OpenCVBridge.h>
+#endif
+
+#if defined(IISDK_IMPORT_IIVISUALCODEC_SPATIAL)
+#include <iiVisualCodec/Spatial.h>
+#endif
+
+#if defined(IISDK_IMPORT_IIVISUALCODEC_USD)
+#include <iiVisualCodec/UsdCodec.h>
+#include <iiVisualCodec/UsdGeometry.h>
+#endif
+
+#if defined(IISDK_IMPORT_IIVISUALCODEC_VIDEO)
+#include <iiVisualCodec/VideoCodec.h>
+#endif
+
+#if defined(IISDK_IMPORT_IIVISUALCODEC_VISION)
+#include <iiVisualCodec/Vision.h>
+#endif

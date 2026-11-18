@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 project(iiVisualCodec VERSION 0.4.2 LANGUAGES C CXX)
+include(./cmake/ModuleImports.cmake)
 include(cmake/InstallPrefix.cmake)
 visual_set_install_prefix()
 include(GNUInstallDirs)
