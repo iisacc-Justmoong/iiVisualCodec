@@ -148,6 +148,10 @@ add_library(iiImageCodec::iiImageCodec ALIAS iiImageCodec)
 target_link_libraries(iiImageCodec INTERFACE iiVisualCodec::Image)
 if(BUILD_TESTING)
     find_package(Python3 COMPONENTS Interpreter REQUIRED)
+    add_test(NAME iiVisualCodec.license COMMAND "${Python3_EXECUTABLE}" -B
+        "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_license.py")
+    set_tests_properties(iiVisualCodec.license PROPERTIES ENVIRONMENT
+        "IIVISUALCODEC_CONFIG=${CMAKE_CURRENT_BINARY_DIR}/iiVisualCodecConfig.cmake;IIIMAGECODEC_CONFIG=${CMAKE_CURRENT_BINARY_DIR}/iiImageCodecConfig.cmake")
     set(_visual_user_home "$ENV{HOME}")
     if(_visual_user_home STREQUAL "")
         set(_visual_user_home "$ENV{USERPROFILE}")
@@ -266,7 +270,7 @@ write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/iiImageCodecConfig
     VERSION 0.1.0 COMPATIBILITY SameMajorVersion)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/iiImageCodecConfig.cmake" "${CMAKE_CURRENT_BINARY_DIR}/iiImageCodecConfigVersion.cmake"
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/iiImageCodec)
-install(FILES README.md LICENSE DESTINATION ${CMAKE_INSTALL_DATADIR}/iiVisualCodec)
+install(FILES README.md LICENSE NOTICE DESTINATION ${CMAKE_INSTALL_DATADIR}/iiVisualCodec)
 install(DIRECTORY docs/ DESTINATION ${CMAKE_INSTALL_DATADIR}/iiVisualCodec/docs)
 install(DIRECTORY third_party/stb/ DESTINATION ${CMAKE_INSTALL_DATADIR}/licenses/iiVisualCodec-stb
     FILES_MATCHING PATTERN "LICENSE*" PATTERN "README*")
